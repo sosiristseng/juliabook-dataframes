@@ -1,0 +1,914 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Joining DataFrames &#8212; Julia DataFrames</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reshaping DataFrames" href="09_reshaping.html" />
+    <link rel="prev" title="Working with CategoricalArrays" href="07_factors.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Julia DataFrames</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Julia DataFrames Example
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01_constructors.html">
+   Constructors and conversion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02_basicinfo.html">
+   Basic information about a data frame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03_missingvalues.html">
+   Handling missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04_loadsave.html">
+   Load and save DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05_columns.html">
+   Manipulating columns of a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06_rows.html">
+   Manipulating rows of DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="07_factors.html">
+   Working with CategoricalArrays
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Joining DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="09_reshaping.html">
+   Reshaping DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="10_transforms.html">
+   Transformation to DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11_performance.html">
+   Performance tips
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12_pitfalls.html">
+   Possible pitfalls
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="13_extras.html">
+   DataFrames Extras
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/sosiristseng/juliabook-dataframes/main?urlpath=tree/docs/08_joins.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/sosiristseng/juliabook-dataframes"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/08_joins.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preparing-dataframes-for-a-join">
+   Preparing DataFrames for a join
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#standard-joins-inner-left-right-outer-semi-anti">
+   Standard joins: inner, left, right, outer, semi, anti
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cross-join">
+   Cross join
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#complex-cases-of-joins">
+   Complex cases of joins
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matchmissing-keyword-argument">
+   matchmissing keyword argument
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Joining DataFrames</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preparing-dataframes-for-a-join">
+   Preparing DataFrames for a join
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#standard-joins-inner-left-right-outer-semi-anti">
+   Standard joins: inner, left, right, outer, semi, anti
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cross-join">
+   Cross join
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#complex-cases-of-joins">
+   Complex cases of joins
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matchmissing-keyword-argument">
+   matchmissing keyword argument
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="joining-dataframes">
+<h1>Joining DataFrames<a class="headerlink" href="#joining-dataframes" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">DataFrames</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="preparing-dataframes-for-a-join">
+<h2>Preparing DataFrames for a join<a class="headerlink" href="#preparing-dataframes-for-a-join" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nb">missing</span><span class="p">],</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Alice&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bob&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Conor&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Dave&quot;</span><span class="p">,</span><span class="s">&quot;Zed&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>5 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>ID</th><th>name</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>Alice</td></tr><tr><th>2</th><td>2</td><td>Bob</td></tr><tr><th>3</th><td>3</td><td>Conor</td></tr><tr><th>4</th><td>4</td><td>Dave</td></tr><tr><th>5</th><td><em>missing</em></td><td>Zed</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="nb">missing</span><span class="p">],</span><span class="w"> </span><span class="n">age</span><span class="o">=</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">99</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>5 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>age</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>21</td></tr><tr><th>2</th><td>2</td><td>22</td></tr><tr><th>3</th><td>5</td><td>23</td></tr><tr><th>4</th><td>6</td><td>24</td></tr><tr><th>5</th><td><em>missing</em></td><td>99</td></tr></tbody></table></div></div></div>
+</div>
+<p>Rules for the <code class="docutils literal notranslate"><span class="pre">on</span></code> keyword argument:</p>
+<ul class="simple">
+<li><p>a single <code class="docutils literal notranslate"><span class="pre">Symbol</span></code> or string if joining on one column with the same name, e.g. <code class="docutils literal notranslate"><span class="pre">on=:id</span></code></p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">Pair</span></code> of <code class="docutils literal notranslate"><span class="pre">Symbol</span></code>s or string if joining on one column with different names, e.g. <code class="docutils literal notranslate"><span class="pre">on=:id=&gt;:id2</span></code></p></li>
+<li><p>a vector of <code class="docutils literal notranslate"><span class="pre">Symbol</span></code>s or strings if joining on multiple columns with the same name, e.g. <code class="docutils literal notranslate"><span class="pre">on=[:id1,</span> <span class="pre">:id2]</span></code></p></li>
+<li><p>a vector of <code class="docutils literal notranslate"><span class="pre">Pair</span></code>s of <code class="docutils literal notranslate"><span class="pre">Symbol</span></code>s or strings if joining on multiple columns with different names, e.g. <code class="docutils literal notranslate"><span class="pre">on=[:a1=&gt;:a2,</span> <span class="pre">:b1=&gt;:b2]</span></code></p></li>
+<li><p>a vector containing a combination of <code class="docutils literal notranslate"><span class="pre">Symbol</span></code>s or strings or <code class="docutils literal notranslate"><span class="pre">Pair</span></code> of <code class="docutils literal notranslate"><span class="pre">Symbol</span></code>s or strings, e.g. <code class="docutils literal notranslate"><span class="pre">on=[:a1=&gt;:a2,</span> <span class="pre">:b1]</span></code></p></li>
+</ul>
+</section>
+<section id="standard-joins-inner-left-right-outer-semi-anti">
+<h2>Standard joins: inner, left, right, outer, semi, anti<a class="headerlink" href="#standard-joins-inner-left-right-outer-semi-anti" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:ID</span><span class="o">=&gt;:</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="c"># missing is not allowed to join-on by default</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">ArgumentError</span>: missing values in key columns are not allowed when matchmissing == :error
+
+<span class="ne">Stacktrace</span>:
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">DataFrames</span><span class="o">.</span><span class="n">DataFrameJoiner</span><span class="p">(</span><span class="n">dfl</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">dfr</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">on</span><span class="p">::</span><span class="n">Pair</span><span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">Symbol</span><span class="p">},</span> <span class="n">matchmissing</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">kind</span><span class="p">::</span><span class="n">Symbol</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">73</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">_join</span><span class="p">(</span><span class="n">df1</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">;</span> <span class="n">on</span><span class="p">::</span><span class="n">Pair</span><span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">Symbol</span><span class="p">},</span> <span class="n">kind</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">makeunique</span><span class="p">::</span><span class="n">Bool</span><span class="p">,</span> <span class="n">indicator</span><span class="p">::</span><span class="n">Nothing</span><span class="p">,</span> <span class="n">validate</span><span class="p">::</span><span class="n">Tuple</span><span class="p">{</span><span class="n">Bool</span><span class="p">,</span> <span class="n">Bool</span><span class="p">},</span> <span class="n">left_rename</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">identity</span><span class="p">),</span> <span class="n">right_rename</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">identity</span><span class="p">),</span> <span class="n">matchmissing</span><span class="p">::</span><span class="n">Symbol</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">322</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#innerjoin#573</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">576</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span>
+   <span class="o">@</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span><span class="mi">1</span>
+ <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="nb">eval</span>
+   <span class="o">@</span> <span class="o">./</span><span class="n">boot</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">373</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="n">include_string</span><span class="p">(</span><span class="n">mapexpr</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">REPL</span><span class="o">.</span><span class="n">softscope</span><span class="p">),</span> <span class="n">mod</span><span class="p">::</span><span class="n">Module</span><span class="p">,</span> <span class="n">code</span><span class="p">::</span><span class="n">String</span><span class="p">,</span> <span class="n">filename</span><span class="p">::</span><span class="n">String</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">Base</span> <span class="o">./</span><span class="n">loading</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">1196</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:ID</span><span class="o">=&gt;:</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>ID</th><th>name</th><th>age</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>Alice</td><td>21</td></tr><tr><th>2</th><td>2</td><td>Bob</td><td>22</td></tr><tr><th>3</th><td><em>missing</em></td><td>Zed</td><td>99</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">leftjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="s">&quot;ID&quot;</span><span class="o">=&gt;</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>5 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>ID</th><th>name</th><th>age</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th><th title="Union{Missing, Int64}">Int64?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>Alice</td><td>21</td></tr><tr><th>2</th><td>2</td><td>Bob</td><td>22</td></tr><tr><th>3</th><td><em>missing</em></td><td>Zed</td><td>99</td></tr><tr><th>4</th><td>3</td><td>Conor</td><td><em>missing</em></td></tr><tr><th>5</th><td>4</td><td>Dave</td><td><em>missing</em></td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">rightjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:ID</span><span class="o">=&gt;:</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>5 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>ID</th><th>name</th><th>age</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>Alice</td><td>21</td></tr><tr><th>2</th><td>2</td><td>Bob</td><td>22</td></tr><tr><th>3</th><td><em>missing</em></td><td>Zed</td><td>99</td></tr><tr><th>4</th><td>5</td><td><em>missing</em></td><td>23</td></tr><tr><th>5</th><td>6</td><td><em>missing</em></td><td>24</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">outerjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:ID</span><span class="o">=&gt;:</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>7 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>ID</th><th>name</th><th>age</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Int64}">Int64?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>Alice</td><td>21</td></tr><tr><th>2</th><td>2</td><td>Bob</td><td>22</td></tr><tr><th>3</th><td><em>missing</em></td><td>Zed</td><td>99</td></tr><tr><th>4</th><td>3</td><td>Conor</td><td><em>missing</em></td></tr><tr><th>5</th><td>4</td><td>Dave</td><td><em>missing</em></td></tr><tr><th>6</th><td>5</td><td><em>missing</em></td><td>23</td></tr><tr><th>7</th><td>6</td><td><em>missing</em></td><td>24</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">semijoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:ID</span><span class="o">=&gt;:</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>ID</th><th>name</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>Alice</td></tr><tr><th>2</th><td>2</td><td>Bob</td></tr><tr><th>3</th><td><em>missing</em></td><td>Zed</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">antijoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:ID</span><span class="o">=&gt;:</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>ID</th><th>name</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>3</td><td>Conor</td></tr><tr><th>2</th><td>4</td><td>Dave</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="cross-join">
+<h2>Cross join<a class="headerlink" href="#cross-join" title="Permalink to this headline">#</a></h2>
+<p>(here no <code class="docutils literal notranslate"><span class="pre">on</span></code> argument)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">crossjoin</span><span class="p">(</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]),</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="s">&quot;c&quot;</span><span class="p">]))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>6 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>a</td></tr><tr><th>2</th><td>1</td><td>b</td></tr><tr><th>3</th><td>1</td><td>c</td></tr><tr><th>4</th><td>2</td><td>a</td></tr><tr><th>5</th><td>2</td><td>b</td></tr><tr><th>6</th><td>2</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="complex-cases-of-joins">
+<h2>Complex cases of joins<a class="headerlink" href="#complex-cases-of-joins" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">id1</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nb">missing</span><span class="p">,</span><span class="nb">missing</span><span class="p">],</span><span class="w"></span>
+<span class="w">              </span><span class="n">id2</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="nb">missing</span><span class="p">,</span><span class="mi">99</span><span class="p">],</span><span class="w"></span>
+<span class="w">              </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Alice&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bob&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Conor&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Dave&quot;</span><span class="p">,</span><span class="s">&quot;Zed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Zoe&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>6 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id1</th><th>id2</th><th>name</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>Alice</td></tr><tr><th>2</th><td>1</td><td>11</td><td>Bob</td></tr><tr><th>3</th><td>2</td><td>2</td><td>Conor</td></tr><tr><th>4</th><td>2</td><td>21</td><td>Dave</td></tr><tr><th>5</th><td><em>missing</em></td><td><em>missing</em></td><td>Zed</td></tr><tr><th>6</th><td><em>missing</em></td><td>99</td><td>Zoe</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">id1</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nb">missing</span><span class="p">,</span><span class="nb">missing</span><span class="p">],</span><span class="w"></span>
+<span class="w">              </span><span class="n">id2</span><span class="o">=</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nb">missing</span><span class="p">,</span><span class="mi">999</span><span class="p">],</span><span class="w"></span>
+<span class="w">              </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">99</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>6 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id1</th><th>id2</th><th>age</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>11</td><td>21</td></tr><tr><th>2</th><td>1</td><td>1</td><td>22</td></tr><tr><th>3</th><td>3</td><td>31</td><td>23</td></tr><tr><th>4</th><td>3</td><td>3</td><td>24</td></tr><tr><th>5</th><td><em>missing</em></td><td><em>missing</em></td><td>99</td></tr><tr><th>6</th><td><em>missing</em></td><td>999</td><td>100</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="ss">:id1</span><span class="p">,</span><span class="w"> </span><span class="ss">:id2</span><span class="p">],</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"> </span><span class="c"># joining on two columns</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>id1</th><th>id2</th><th>name</th><th>age</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>11</td><td>Bob</td><td>21</td></tr><tr><th>2</th><td>1</td><td>1</td><td>Alice</td><td>22</td></tr><tr><th>3</th><td><em>missing</em></td><td><em>missing</em></td><td>Zed</td><td>99</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">outerjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:id1</span><span class="p">,</span><span class="w"> </span><span class="n">makeunique</span><span class="o">=</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">indicator</span><span class="o">=</span><span class="ss">:source</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"> </span><span class="c"># with duplicates all combinations are produced</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>12 rows × 6 columns</p><table class="data-frame"><thead><tr><th></th><th>id1</th><th>id2</th><th>name</th><th>id2_1</th><th>age</th><th>source</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, Int64}">Int64?</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>Alice</td><td>11</td><td>21</td><td>both</td></tr><tr><th>2</th><td>1</td><td>11</td><td>Bob</td><td>11</td><td>21</td><td>both</td></tr><tr><th>3</th><td>1</td><td>1</td><td>Alice</td><td>1</td><td>22</td><td>both</td></tr><tr><th>4</th><td>1</td><td>11</td><td>Bob</td><td>1</td><td>22</td><td>both</td></tr><tr><th>5</th><td><em>missing</em></td><td><em>missing</em></td><td>Zed</td><td><em>missing</em></td><td>99</td><td>both</td></tr><tr><th>6</th><td><em>missing</em></td><td>99</td><td>Zoe</td><td><em>missing</em></td><td>99</td><td>both</td></tr><tr><th>7</th><td><em>missing</em></td><td><em>missing</em></td><td>Zed</td><td>999</td><td>100</td><td>both</td></tr><tr><th>8</th><td><em>missing</em></td><td>99</td><td>Zoe</td><td>999</td><td>100</td><td>both</td></tr><tr><th>9</th><td>2</td><td>2</td><td>Conor</td><td><em>missing</em></td><td><em>missing</em></td><td>left_only</td></tr><tr><th>10</th><td>2</td><td>21</td><td>Dave</td><td><em>missing</em></td><td><em>missing</em></td><td>left_only</td></tr><tr><th>11</th><td>3</td><td><em>missing</em></td><td><em>missing</em></td><td>31</td><td>23</td><td>right_only</td></tr><tr><th>12</th><td>3</td><td><em>missing</em></td><td><em>missing</em></td><td>3</td><td>24</td><td>right_only</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># you can force validation of uniqueness of key on which you join</span><span class="w"></span>
+<span class="n">innerjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:id1</span><span class="p">,</span><span class="w"> </span><span class="n">makeunique</span><span class="o">=</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">validate</span><span class="o">=</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="nb">true</span><span class="p">),</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">ArgumentError</span>: Merge key(s) are not unique in both df1 and df2. df1 contains 3 duplicate keys: NamedTuple{(:id1,), Tuple{Union{Missing, Int64}}}((1,)), ..., NamedTuple{(:id1,), Tuple{Union{Missing, Int64}}}((missing,)). df2 contains 3 duplicate keys: NamedTuple{(:id1,), Tuple{Union{Missing, Int64}}}((1,)), ..., NamedTuple{(:id1,), Tuple{Union{Missing, Int64}}}((missing,)).
+
+<span class="ne">Stacktrace</span>:
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">_join</span><span class="p">(</span><span class="n">df1</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">;</span> <span class="n">on</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">kind</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">makeunique</span><span class="p">::</span><span class="n">Bool</span><span class="p">,</span> <span class="n">indicator</span><span class="p">::</span><span class="n">Nothing</span><span class="p">,</span> <span class="n">validate</span><span class="p">::</span><span class="n">Tuple</span><span class="p">{</span><span class="n">Bool</span><span class="p">,</span> <span class="n">Bool</span><span class="p">},</span> <span class="n">left_rename</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">identity</span><span class="p">),</span> <span class="n">right_rename</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">identity</span><span class="p">),</span> <span class="n">matchmissing</span><span class="p">::</span><span class="n">Symbol</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">386</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#innerjoin#573</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">576</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span>
+   <span class="o">@</span> <span class="n">In</span><span class="p">[</span><span class="mi">16</span><span class="p">]:</span><span class="mi">2</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="nb">eval</span>
+   <span class="o">@</span> <span class="o">./</span><span class="n">boot</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">373</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="n">include_string</span><span class="p">(</span><span class="n">mapexpr</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">REPL</span><span class="o">.</span><span class="n">softscope</span><span class="p">),</span> <span class="n">mod</span><span class="p">::</span><span class="n">Module</span><span class="p">,</span> <span class="n">code</span><span class="p">::</span><span class="n">String</span><span class="p">,</span> <span class="n">filename</span><span class="p">::</span><span class="n">String</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">Base</span> <span class="o">./</span><span class="n">loading</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">1196</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>mixed <code class="docutils literal notranslate"><span class="pre">on</span></code> argument for joining on multiple columns</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">id1</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="n">id2</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;f&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>6 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id1</th><th>id2</th><th>x1</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Char">Char</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>a</td></tr><tr><th>2</th><td>2</td><td>2</td><td>b</td></tr><tr><th>3</th><td>3</td><td>1</td><td>c</td></tr><tr><th>4</th><td>4</td><td>2</td><td>d</td></tr><tr><th>5</th><td>5</td><td>1</td><td>e</td></tr><tr><th>6</th><td>6</td><td>2</td><td>f</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">id1</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="n">ID2</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;f&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>6 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id1</th><th>ID2</th><th>x2</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Char">Char</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>a</td></tr><tr><th>2</th><td>2</td><td>2</td><td>b</td></tr><tr><th>3</th><td>3</td><td>3</td><td>c</td></tr><tr><th>4</th><td>4</td><td>4</td><td>d</td></tr><tr><th>5</th><td>5</td><td>5</td><td>e</td></tr><tr><th>6</th><td>6</td><td>6</td><td>f</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="ss">:id1</span><span class="p">,</span><span class="w"> </span><span class="ss">:id2</span><span class="o">=&gt;:</span><span class="n">ID2</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>id1</th><th>id2</th><th>x1</th><th>x2</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Char">Char</th><th title="Char">Char</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>a</td><td>a</td></tr><tr><th>2</th><td>2</td><td>2</td><td>b</td><td>b</td></tr></tbody></table></div></div></div>
+</div>
+<p>joining more than two data frames</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">xs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">DataFrame</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="o">=&gt;</span><span class="mi">1</span><span class="o">:</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;v</span><span class="si">$i</span><span class="s">&quot;</span><span class="o">=&gt;</span><span class="p">((</span><span class="mi">1</span><span class="o">:</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="mi">10</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5-element Vector{DataFrame}:
+ <span class=" -Color -Color-Bold">6×2 DataFrame</span>
+<span class=" -Color -Color-Bold"> Row </span>│<span class=" -Color -Color-Bold"> id     v1    </span>
+<span class=" -Color -Color-Bold">     </span>│ Int64  Int64 
+─────┼──────────────
+   1 │     1     11
+   2 │     2     12
+   3 │     3     13
+   4 │     4     14
+   5 │     5     15
+   6 │     6     16
+ <span class=" -Color -Color-Bold">6×2 DataFrame</span>
+<span class=" -Color -Color-Bold"> Row </span>│<span class=" -Color -Color-Bold"> id     v2    </span>
+<span class=" -Color -Color-Bold">     </span>│ Int64  Int64 
+─────┼──────────────
+   1 │     1     21
+   2 │     2     22
+   3 │     3     23
+   4 │     4     24
+   5 │     5     25
+   6 │     6     26
+ <span class=" -Color -Color-Bold">6×2 DataFrame</span>
+<span class=" -Color -Color-Bold"> Row </span>│<span class=" -Color -Color-Bold"> id     v3    </span>
+<span class=" -Color -Color-Bold">     </span>│ Int64  Int64 
+─────┼──────────────
+   1 │     1     31
+   2 │     2     32
+   3 │     3     33
+   4 │     4     34
+   5 │     5     35
+   6 │     6     36
+ <span class=" -Color -Color-Bold">6×2 DataFrame</span>
+<span class=" -Color -Color-Bold"> Row </span>│<span class=" -Color -Color-Bold"> id     v4    </span>
+<span class=" -Color -Color-Bold">     </span>│ Int64  Int64 
+─────┼──────────────
+   1 │     1     41
+   2 │     2     42
+   3 │     3     43
+   4 │     4     44
+   5 │     5     45
+   6 │     6     46
+ <span class=" -Color -Color-Bold">6×2 DataFrame</span>
+<span class=" -Color -Color-Bold"> Row </span>│<span class=" -Color -Color-Bold"> id     v5    </span>
+<span class=" -Color -Color-Bold">     </span>│ Int64  Int64 
+─────┼──────────────
+   1 │     1     51
+   2 │     2     52
+   3 │     3     53
+   4 │     4     54
+   5 │     5     55
+   6 │     6     56
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">xs</span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:id</span><span class="p">)</span><span class="w"> </span><span class="c"># also for outerjoin and crossjoin</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>6 rows × 6 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>11</td><td>21</td><td>31</td><td>41</td><td>51</td></tr><tr><th>2</th><td>2</td><td>12</td><td>22</td><td>32</td><td>42</td><td>52</td></tr><tr><th>3</th><td>3</td><td>13</td><td>23</td><td>33</td><td>43</td><td>53</td></tr><tr><th>4</th><td>4</td><td>14</td><td>24</td><td>34</td><td>44</td><td>54</td></tr><tr><th>5</th><td>5</td><td>15</td><td>25</td><td>35</td><td>45</td><td>55</td></tr><tr><th>6</th><td>6</td><td>16</td><td>26</td><td>36</td><td>46</td><td>56</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="matchmissing-keyword-argument">
+<h2>matchmissing keyword argument<a class="headerlink" href="#matchmissing-keyword-argument" title="Permalink to this headline">#</a></h2>
+<p>In general you have three options how <code class="docutils literal notranslate"><span class="pre">missing</span></code> values are handled in joins that are handled by <code class="docutils literal notranslate"><span class="pre">matchmisssing</span></code> kewyowrd argument value as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">:error</span></code>: throw an error if missings are encountered (this is the default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:equal</span></code>: assume <code class="docutils literal notranslate"><span class="pre">misssing</span></code> values are equal to themselves</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:notequal</span></code>: assume <code class="docutils literal notranslate"><span class="pre">misssing</span></code> values are not equal to themselves (not available for <code class="docutils literal notranslate"><span class="pre">outerjoin</span></code>)</p></li>
+</ul>
+<p>Here are some examples comparing the options:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">missing</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>x</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td></tr><tr><th>2</th><td>2</td><td>2</td></tr><tr><th>3</th><td><em>missing</em></td><td>3</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">missing</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>y</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td></tr><tr><th>2</th><td><em>missing</em></td><td>2</td></tr><tr><th>3</th><td>3</td><td>3</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span><span class="w"> </span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:id</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">ArgumentError</span>: missing values in key columns are not allowed when matchmissing == :error
+
+<span class="ne">Stacktrace</span>:
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">DataFrames</span><span class="o">.</span><span class="n">DataFrameJoiner</span><span class="p">(</span><span class="n">dfl</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">dfr</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">on</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">matchmissing</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">kind</span><span class="p">::</span><span class="n">Symbol</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">73</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">_join</span><span class="p">(</span><span class="n">df1</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">;</span> <span class="n">on</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">kind</span><span class="p">::</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">makeunique</span><span class="p">::</span><span class="n">Bool</span><span class="p">,</span> <span class="n">indicator</span><span class="p">::</span><span class="n">Nothing</span><span class="p">,</span> <span class="n">validate</span><span class="p">::</span><span class="n">Tuple</span><span class="p">{</span><span class="n">Bool</span><span class="p">,</span> <span class="n">Bool</span><span class="p">},</span> <span class="n">left_rename</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">identity</span><span class="p">),</span> <span class="n">right_rename</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">identity</span><span class="p">),</span> <span class="n">matchmissing</span><span class="p">::</span><span class="n">Symbol</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">322</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#innerjoin#573</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">join</span><span class="o">/</span><span class="n">composer</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">576</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span>
+   <span class="o">@</span> <span class="n">In</span><span class="p">[</span><span class="mi">24</span><span class="p">]:</span><span class="mi">1</span>
+ <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="nb">eval</span>
+   <span class="o">@</span> <span class="o">./</span><span class="n">boot</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">373</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="n">include_string</span><span class="p">(</span><span class="n">mapexpr</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">REPL</span><span class="o">.</span><span class="n">softscope</span><span class="p">),</span> <span class="n">mod</span><span class="p">::</span><span class="n">Module</span><span class="p">,</span> <span class="n">code</span><span class="p">::</span><span class="n">String</span><span class="p">,</span> <span class="n">filename</span><span class="p">::</span><span class="n">String</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">Base</span> <span class="o">./</span><span class="n">loading</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">1196</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span><span class="w"> </span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:equal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>x</th><th>y</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>1</td></tr><tr><th>2</th><td><em>missing</em></td><td>3</td><td>2</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">innerjoin</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span><span class="w"> </span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:notequal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>1 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>x</th><th>y</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>1</td></tr></tbody></table></div></div></div>
+</div>
+<p>Since DataFrames.jl 1.3 you can do an efficient left join of two data frames in-place. This means that the left data frame gets updated with new columns, but the columns that exist in it are not affected. This operation requires that there are no duplicates of keys in the right data frame that match keys in left data frame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>x</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td></tr><tr><th>2</th><td>2</td><td>2</td></tr><tr><th>3</th><td><em>missing</em></td><td>3</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>y</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td></tr><tr><th>2</th><td><em>missing</em></td><td>2</td></tr><tr><th>3</th><td>3</td><td>3</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">leftjoin!</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span><span class="w"> </span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="n">on</span><span class="o">=</span><span class="ss">:id</span><span class="p">,</span><span class="w"> </span><span class="n">matchmissing</span><span class="o">=</span><span class="ss">:notequal</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>x</th><th>y</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th><th title="Union{Missing, Int64}">Int64?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>1</td></tr><tr><th>2</th><td>2</td><td>2</td><td><em>missing</em></td></tr><tr><th>3</th><td><em>missing</em></td><td>3</td><td><em>missing</em></td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>id</th><th>x</th><th>y</th></tr><tr><th></th><th title="Union{Missing, Int64}">Int64?</th><th title="Int64">Int64</th><th title="Union{Missing, Int64}">Int64?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>1</td></tr><tr><th>2</th><td>2</td><td>2</td><td><em>missing</em></td></tr><tr><th>3</th><td><em>missing</em></td><td>3</td><td><em>missing</em></td></tr></tbody></table></div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.7"
+        },
+        kernelOptions: {
+            kernelName: "julia-1.7",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.7'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="07_factors.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Working with CategoricalArrays</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="09_reshaping.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Reshaping DataFrames</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Wen-Wei Tseng<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

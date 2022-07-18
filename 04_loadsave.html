@@ -1,0 +1,1434 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Load and save DataFrames &#8212; Julia DataFrames</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Manipulating columns of a DataFrame" href="05_columns.html" />
+    <link rel="prev" title="Handling missing values" href="03_missingvalues.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Julia DataFrames</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Julia DataFrames Example
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01_constructors.html">
+   Constructors and conversion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02_basicinfo.html">
+   Basic information about a data frame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03_missingvalues.html">
+   Handling missing values
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Load and save DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05_columns.html">
+   Manipulating columns of a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06_rows.html">
+   Manipulating rows of DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="07_factors.html">
+   Working with CategoricalArrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="08_joins.html">
+   Joining DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="09_reshaping.html">
+   Reshaping DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="10_transforms.html">
+   Transformation to DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11_performance.html">
+   Performance tips
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12_pitfalls.html">
+   Possible pitfalls
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="13_extras.html">
+   DataFrames Extras
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/sosiristseng/juliabook-dataframes/main?urlpath=tree/docs/04_loadsave.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/sosiristseng/juliabook-dataframes"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/04_loadsave.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#csv-jl">
+   CSV.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#serialization-jdf-jl-and-jlso-jl">
+   Serialization, JDF.jl, and JLSO.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#jdf-jl">
+   JDF.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#jlso-jl">
+   JLSO.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#jsontables-jl">
+   JSONTables.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arrow-jl">
+   Arrow.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-bechmarking">
+   Basic bechmarking
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-gzip-compression">
+   Using gzip compression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-zip-files">
+   Using zip files
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Load and save DataFrames</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#csv-jl">
+   CSV.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#serialization-jdf-jl-and-jlso-jl">
+   Serialization, JDF.jl, and JLSO.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#jdf-jl">
+   JDF.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#jlso-jl">
+   JLSO.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#jsontables-jl">
+   JSONTables.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arrow-jl">
+   Arrow.jl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-bechmarking">
+   Basic bechmarking
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-gzip-compression">
+   Using gzip compression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-zip-files">
+   Using zip files
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="load-and-save-dataframes">
+<h1>Load and save DataFrames<a class="headerlink" href="#load-and-save-dataframes" title="Permalink to this headline">#</a></h1>
+<p>We do not cover all features of the packages. Please refer to their documentation to learn them.</p>
+<p>Here we’ll load <code class="docutils literal notranslate"><span class="pre">CSV.jl</span></code> to read and write CSV files and <code class="docutils literal notranslate"><span class="pre">Arrow.jl</span></code>, <code class="docutils literal notranslate"><span class="pre">JLSO.jl</span></code>, and serialization, which allow us to work with a binary format and <code class="docutils literal notranslate"><span class="pre">JSONTables.jl</span></code> for JSON interaction. Finally we consider a custom <code class="docutils literal notranslate"><span class="pre">JDF.jl</span></code> format.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">DataFrames</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">Arrow</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">CSV</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">Serialization</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">JLSO</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">JSONTables</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">CodecZlib</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">ZipFile</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">JDF</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">StatsPlots</span><span class="w"> </span><span class="c"># for charts</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">Mmap</span><span class="w"> </span><span class="c"># for compression</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s create a simple <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> for testing purposes,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="p">[</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">],</span><span class="w"> </span><span class="n">B</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">missing</span><span class="p">],</span><span class="w"></span>
+<span class="w">              </span><span class="n">C</span><span class="o">=</span><span class="p">[</span><span class="nb">missing</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;c&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">D</span><span class="o">=</span><span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">missing</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;c&#39;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Char}">Char?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<p>and use <code class="docutils literal notranslate"><span class="pre">eltypes</span></code> to look at the columnwise types.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">eltype</span><span class="o">.</span><span class="p">(</span><span class="n">eachcol</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Type}:
+ Bool
+ Union{Missing, Int64}
+ Union{Missing, String}
+ Union{Missing, Char}
+</pre></div>
+</div>
+</div>
+</div>
+<section id="csv-jl">
+<h2>CSV.jl<a class="headerlink" href="#csv-jl" title="Permalink to this headline">#</a></h2>
+<p>Let’s use <code class="docutils literal notranslate"><span class="pre">CSV</span></code> to save <code class="docutils literal notranslate"><span class="pre">x</span></code> to disk; make sure <code class="docutils literal notranslate"><span class="pre">x1.csv</span></code> does not conflict with some file in your working directory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">CSV</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;x1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;x1.csv&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can see how it was saved by reading <code class="docutils literal notranslate"><span class="pre">x.csv</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;x1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A,B,C,D
+true,1,,a
+false,2,b,
+true,,c,c
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also load it back.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;x1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String1}">String1?</th><th title="Union{Missing, String1}">String1?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<p>Note that when loading in a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> from a <code class="docutils literal notranslate"><span class="pre">CSV</span></code> the column type for columns <code class="docutils literal notranslate"><span class="pre">:C</span></code> <code class="docutils literal notranslate"><span class="pre">:D</span></code> have changed to use special strings defined in the InlineStrings.jl package.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">eltype</span><span class="o">.</span><span class="p">(</span><span class="n">eachcol</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Type}:
+ Bool
+ Union{Missing, Int64}
+ Union{Missing, String1}
+ Union{Missing, String1}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="serialization-jdf-jl-and-jlso-jl">
+<h2>Serialization, JDF.jl, and JLSO.jl<a class="headerlink" href="#serialization-jdf-jl-and-jlso-jl" title="Permalink to this headline">#</a></h2>
+<p>Now we use serialization to save <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
+<p>There are two ways to perform serialization. The first way is to use the <code class="docutils literal notranslate"><span class="pre">Serialization.serialize</span></code> as below:</p>
+<p>Note that in general, this process will not work if the reading and writing are done by different versions of Julia, or an instance of Julia with a different system image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">open</span><span class="p">(</span><span class="s">&quot;x.bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">io</span><span class="w"></span>
+<span class="w">    </span><span class="n">serialize</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we load back the saved file to <code class="docutils literal notranslate"><span class="pre">y</span></code> variable. Again <code class="docutils literal notranslate"><span class="pre">y</span></code> is identical to <code class="docutils literal notranslate"><span class="pre">x</span></code>. However, please beware that if you session does not have DataFrames.jl loaded, then it may not recognise the content as DataFrames.jl</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">deserialize</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x.bin&quot;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Char}">Char?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">eltype</span><span class="o">.</span><span class="p">(</span><span class="n">eachcol</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Type}:
+ Bool
+ Union{Missing, Int64}
+ Union{Missing, String}
+ Union{Missing, Char}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="jdf-jl">
+<h2>JDF.jl<a class="headerlink" href="#jdf-jl" title="Permalink to this headline">#</a></h2>
+<p><a class="reference external" href="https://github.com/xiaodaigh/JDF">JDF.jl</a> is a relatively new package designed to serialize DataFrames. You can save a DataFrame with the <code class="docutils literal notranslate"><span class="pre">savejdf</span></code> function.</p>
+<p>For more details about design assumptions and limitations of <code class="docutils literal notranslate"><span class="pre">JDF.jl</span></code> please check out <a class="reference external" href="https://github.com/xiaodaigh/JDF.jl">https://github.com/xiaodaigh/JDF.jl</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">JDF</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;x.jdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To load the saved JDF file, one can use the <code class="docutils literal notranslate"><span class="pre">loadjdf</span></code> function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x_loaded</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JDF</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;x.jdf&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Char}">Char?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can see that they are the same</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">isequal</span><span class="p">(</span><span class="n">x_loaded</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<p>JDF.jl offers the ability to load only certain columns from disk to help with working with large files</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># set up a JDFFile which is a on disk representation of `x` backed by JDF.jl</span><span class="w"></span>
+<span class="n">x_ondisk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">jdf</span><span class="s">&quot;x.jdf&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JDFFile{String}(&quot;x.jdf&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see all the names of <code class="docutils literal notranslate"><span class="pre">x</span></code> without loading it into memory</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">names</span><span class="p">(</span><span class="n">x_ondisk</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Symbol}:
+ :A
+ :B
+ :C
+ :D
+</pre></div>
+</div>
+</div>
+</div>
+<p>The below is an example of how to load only columns <code class="docutils literal notranslate"><span class="pre">:A</span></code> and <code class="docutils literal notranslate"><span class="pre">:D</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">xd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JDF</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">x_ondisk</span><span class="p">;</span><span class="w"> </span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">])</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Char}">Char?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>a</td></tr><tr><th>2</th><td>0</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="jlso-jl">
+<h2>JLSO.jl<a class="headerlink" href="#jlso-jl" title="Permalink to this headline">#</a></h2>
+<p>Another way to perform serialization is by using the <a class="reference external" href="https://github.com/invenia/JLSO.jl">JLSO.jl</a> library:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">JLSO</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;x.jlso&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:data</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can laod back the file to <code class="docutils literal notranslate"><span class="pre">y</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLSO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;x.jlso&quot;</span><span class="p">)[</span><span class="ss">:data</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Char}">Char?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">eltype</span><span class="o">.</span><span class="p">(</span><span class="n">eachcol</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Type}:
+ Bool
+ Union{Missing, Int64}
+ Union{Missing, String}
+ Union{Missing, Char}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="jsontables-jl">
+<h2>JSONTables.jl<a class="headerlink" href="#jsontables-jl" title="Permalink to this headline">#</a></h2>
+<p>Often you might need to read and write data stored in JSON format. JSONTables.jl provides a way to process them in row-oriented or column-oriented layout. We present both options below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">arraytable</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;x1.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>106
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">objecttable</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;x2.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>76
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;x1.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&quot;A&quot;:true,&quot;B&quot;:1,&quot;C&quot;:null,&quot;D&quot;:&quot;a&quot;},{&quot;A&quot;:false,&quot;B&quot;:2,&quot;C&quot;:&quot;b&quot;,&quot;D&quot;:null},{&quot;A&quot;:true,&quot;B&quot;:null,&quot;C&quot;:&quot;c&quot;,&quot;D&quot;:&quot;c&quot;}]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;x2.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&quot;A&quot;:[true,false,true],&quot;B&quot;:[1,2,null],&quot;C&quot;:[null,&quot;b&quot;,&quot;c&quot;],&quot;D&quot;:[&quot;a&quot;,null,&quot;c&quot;]}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">jsontable</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x1.json&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">eltype</span><span class="o">.</span><span class="p">(</span><span class="n">eachcol</span><span class="p">(</span><span class="n">y1</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Type}:
+ Bool
+ Union{Missing, Int64}
+ Union{Missing, String}
+ Union{Missing, String}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">jsontable</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2.json&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">eltype</span><span class="o">.</span><span class="p">(</span><span class="n">eachcol</span><span class="p">(</span><span class="n">y2</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Type}:
+ Bool
+ Union{Missing, Int64}
+ Union{Missing, String}
+ Union{Missing, String}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="arrow-jl">
+<h2>Arrow.jl<a class="headerlink" href="#arrow-jl" title="Permalink to this headline">#</a></h2>
+<p>Finally we use Apache Arrow format that allows, in particular, for data interchange with R or Python.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">Arrow</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;x.arrow&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;x.arrow&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arrow</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;x.arrow&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Char}">Char?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">eltype</span><span class="o">.</span><span class="p">(</span><span class="n">eachcol</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Type}:
+ Bool
+ Union{Missing, Int64}
+ Union{Missing, String}
+ Union{Missing, Char}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that columns of <code class="docutils literal notranslate"><span class="pre">y</span></code> are immutable</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>ReadOnlyMemoryError()
+
+Stacktrace:
+ [1] setindex!
+   @ ./array.jl:903 [inlined]
+ [2] setindex!(p::Arrow.BoolVector{Bool}, v::Bool, i::Int64)
+   @ Arrow ~/.julia/packages/Arrow/ZlMFU/src/arraytypes/bool.jl:49
+ [3] top-level scope
+   @ In[31]:1
+ [4] eval
+   @ ./boot.jl:373 [inlined]
+ [5] include_string(mapexpr::typeof(REPL.softscope), mod::Module, code::String, filename::String)
+   @ Base ./loading.jl:1196
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is because <code class="docutils literal notranslate"><span class="pre">Arrow.Table</span></code> uses memory mapping and thus uses a custom vector types:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">A</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-element Arrow.BoolVector{Bool}:
+ 1
+ 0
+ 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">B</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-element Arrow.Primitive{Union{Missing, Int64}, Vector{Int64}}:
+ 1
+ 2
+  missing
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can get standard Julia Base vectors by copying a data frame</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">copy</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Union{Missing, Int64}">Int64?</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, Char}">Char?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td><em>missing</em></td><td>a</td></tr><tr><th>2</th><td>0</td><td>2</td><td>b</td><td><em>missing</em></td></tr><tr><th>3</th><td>1</td><td><em>missing</em></td><td>c</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y2</span><span class="o">.</span><span class="n">A</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-element Vector{Bool}:
+ 1
+ 0
+ 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y2</span><span class="o">.</span><span class="n">B</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-element Vector{Union{Missing, Int64}}:
+ 1
+ 2
+  missing
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="basic-bechmarking">
+<h2>Basic bechmarking<a class="headerlink" href="#basic-bechmarking" title="Permalink to this headline">#</a></h2>
+<p>Next, we’ll create some files, so be careful that you don’t already have these files in your working directory!</p>
+<p>In particular, we’ll time how long it takes us to write a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> with 1000 rows and 100000 columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">bigdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="kt">Bool</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">^</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="n">bigdf</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Int</span><span class="o">.</span><span class="p">(</span><span class="n">bigdf</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"></span>
+<span class="n">bigdf</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bigdf</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="mf">0.5</span><span class="w"></span>
+<span class="n">bigdf</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="o">.</span><span class="p">(</span><span class="n">bigdf</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&quot;, as string&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;First run&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;CSV.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">csvwrite1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;bigdf1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Serialization&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">serializewrite1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;bigdf.bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JDF.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jdfwrite1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JDF</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JLSO.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jlsowrite1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JLSO</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;bigdf.jlso&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:data</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Arrow.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">arrowwrite1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">Arrow</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;bigdf.arrow&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl arraytable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesawrite1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">arraytable</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;bigdf1.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl objecttable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesowrite1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">objecttable</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;bigdf2.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Second run&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;CSV.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">csvwrite2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;bigdf1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Serialization&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">serializewrite2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;bigdf.bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JDF.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jdfwrite2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JDF</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JLSO.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jlsowrite2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JLSO</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;bigdf.jlso&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:data</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Arrow.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">arrowwrite2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">Arrow</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;bigdf.arrow&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl arraytable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesawrite2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">arraytable</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;bigdf1.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl objecttable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesowrite2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">objecttable</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">bigdf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;bigdf2.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>First run
+CSV.jl
+ 10.760383 seconds (61.07 M allocations: 1.870 GiB, 3.14% gc time, 55.41% compilation time)
+Serialization
+  0.327672 seconds (401.32 k allocations: 21.609 MiB, 28.43% compilation time)
+JDF.jl
+  0.157502 seconds (75.70 k allocations: 148.927 MiB, 10.30% gc time, 42.18% compilation time)
+JLSO.jl
+  1.078790 seconds (302.84 k allocations: 19.269 MiB, 7.17% compilation time)
+Arrow.jl
+  2.455649 seconds (5.63 M allocations: 352.670 MiB, 3.77% gc time, 96.40% compilation time)
+JSONTables.jl arraytable
+ 12.010389 seconds (230.34 M allocations: 5.531 GiB, 12.82% gc time, 1.97% compilation time)
+JSONTables.jl objecttable
+  0.484777 seconds (295.69 k allocations: 291.693 MiB, 9.38% gc time, 49.15% compilation time)
+Second run
+CSV.jl
+  4.787026 seconds (59.29 M allocations: 1.782 GiB, 4.71% gc time)
+Serialization
+  0.295322 seconds (16.70 k allocations: 504.280 KiB, 4.83% compilation time)
+JDF.jl
+  0.102290 seconds (28.12 k allocations: 146.369 MiB, 27.38% gc time)
+JLSO.jl
+  0.994502 seconds (31.63 k allocations: 4.631 MiB)
+Arrow.jl
+  0.085162 seconds (52.15 k allocations: 5.570 MiB)
+JSONTables.jl arraytable
+ 11.487519 seconds (229.61 M allocations: 5.498 GiB, 10.97% gc time, 0.13% compilation time)
+JSONTables.jl objecttable
+  0.532293 seconds (18.32 k allocations: 277.676 MiB, 54.92% gc time, 2.88% compilation time)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.532628395
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">groupedbar</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="c"># Exclude JSONTables.jl arraytable due to timing</span><span class="w"></span>
+<span class="w">    </span><span class="n">repeat</span><span class="p">([</span><span class="s">&quot;CSV.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Serialization&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;JDF.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;JLSO.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Arrow.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;JSONTables.jl</span><span class="se">\n</span><span class="s">objecttable&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="n">inner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">csvwrite1</span><span class="p">,</span><span class="w"> </span><span class="n">csvwrite2</span><span class="p">,</span><span class="w"> </span><span class="n">serializewrite1</span><span class="p">,</span><span class="w"> </span><span class="n">serializewrite1</span><span class="p">,</span><span class="w"> </span><span class="n">jdfwrite1</span><span class="p">,</span><span class="w"> </span><span class="n">jdfwrite2</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="n">jlsowrite1</span><span class="p">,</span><span class="w"> </span><span class="n">jlsowrite2</span><span class="p">,</span><span class="w"> </span><span class="n">arrowwrite1</span><span class="p">,</span><span class="w"> </span><span class="n">arrowwrite2</span><span class="p">,</span><span class="w"> </span><span class="n">jsontablesowrite2</span><span class="p">,</span><span class="w"> </span><span class="n">jsontablesowrite2</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repeat</span><span class="p">([</span><span class="s">&quot;1st&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2nd&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">outer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Second&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Write Performance</span><span class="se">\n</span><span class="s">DataFrame: bigdf</span><span class="se">\n</span><span class="s">Size: </span><span class="si">$</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">bigdf</span><span class="p">))</span><span class="s">&quot;</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/04_loadsave_66_0.svg" src="_images/04_loadsave_66_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">data_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;bigdf1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf.bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf.arrow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf1.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf2.json&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data_files</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getfield</span><span class="o">.</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="p">(</span><span class="n">data_files</span><span class="p">),</span><span class="w"> </span><span class="ss">:size</span><span class="p">))</span><span class="w"></span>
+<span class="n">append!</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="n">reduce</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                                      </span><span class="n">stat</span><span class="o">.</span><span class="p">(</span><span class="n">joinpath</span><span class="o">.</span><span class="p">(</span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">))),</span><span class="w"></span>
+<span class="w">                                                      </span><span class="n">init</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span><span class="w"></span>
+<span class="n">sort!</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="ss">:size</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>6 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>file</th><th>size</th></tr><tr><th></th><th title="String">String</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>bigdf.arrow</td><td>1742834</td></tr><tr><th>2</th><td>bigdf.bin</td><td>5200698</td></tr><tr><th>3</th><td>bigdf.jdf</td><td>5219979</td></tr><tr><th>4</th><td>bigdf1.csv</td><td>55084591</td></tr><tr><th>5</th><td>bigdf2.json</td><td>55088592</td></tr><tr><th>6</th><td>bigdf1.json</td><td>124029699</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@df</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="n">plot</span><span class="p">(</span><span class="ss">:file</span><span class="p">,</span><span class="w"> </span><span class="ss">:size</span><span class="o">/</span><span class="mi">1024</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">seriestype</span><span class="o">=</span><span class="ss">:bar</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Format File Size (MB)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Size&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="o">=</span><span class="s">&quot;MB&quot;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/04_loadsave_68_0.svg" src="_images/04_loadsave_68_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">println</span><span class="p">(</span><span class="s">&quot;First run&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;CSV.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">csvread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;bigdf1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Serialization&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">serializeread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">deserialize</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf.bin&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JDF.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jdfread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JDF</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JLSO.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jlsoread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JLSO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;bigdf.jlso&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Arrow.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">arrowread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">df_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arrow</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bigdf.arrow&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+<span class="n">arrowread1copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">copy</span><span class="p">(</span><span class="n">df_tmp</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl arraytable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesaread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">jsontable</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf1.json&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl objecttable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesoread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">jsontable</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf2.json&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Second run&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">csvread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;bigdf1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Serialization&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">serializeread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">deserialize</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf.bin&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JDF.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jdfread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JDF</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JLSO.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jlsoread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">JLSO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;bigdf.jlso&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Arrow.jl&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">arrowread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">df_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arrow</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bigdf.arrow&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+<span class="n">arrowread2copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">copy</span><span class="p">(</span><span class="n">df_tmp</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl arraytable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesaread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">jsontable</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf1.json&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;JSONTables.jl objecttable&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">jsontablesoread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@elapsed</span><span class="w"> </span><span class="nd">@time</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">jsontable</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf2.json&quot;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>First run
+CSV.jl
+  1.241955 seconds (767.81 k allocations: 77.641 MiB, 2.37% gc time, 38.74% compilation time)
+Serialization
+  0.509210 seconds (9.49 M allocations: 155.529 MiB, 4.94% gc time, 5.32% compilation time)
+JDF.jl
+  1.856927 seconds (328.98 k allocations: 170.314 MiB, 1.81% gc time, 92.53% compilation time)
+JLSO.jl
+  0.355795 seconds (9.51 M allocations: 157.829 MiB, 9.21% gc time, 5.18% compilation time)
+Arrow.jl
+  0.411612 seconds (488.67 k allocations: 26.124 MiB, 98.09% compilation time)
+  0.053611 seconds (12.50 k allocations: 10.358 MiB)
+JSONTables.jl arraytable
+ 11.275657 seconds (240.46 k allocations: 1.338 GiB, 5.86% gc time, 0.00% compilation time)
+JSONTables.jl objecttable
+  0.472292 seconds (54.19 k allocations: 285.101 MiB, 2.06% gc time, 11.74% compilation time)
+Second run
+  0.873709 seconds (21.25 k allocations: 32.630 MiB)
+Serialization
+  0.461200 seconds (9.48 M allocations: 154.666 MiB)
+JDF.jl
+  0.129120 seconds (67.20 k allocations: 157.911 MiB, 23.15% gc time)
+JLSO.jl
+  0.311029 seconds (9.50 M allocations: 157.297 MiB)
+Arrow.jl
+  0.005541 seconds (68.52 k allocations: 3.344 MiB)
+  0.053547 seconds (12.50 k allocations: 10.358 MiB)
+JSONTables.jl arraytable
+ 10.630899 seconds (240.06 k allocations: 1.338 GiB, 0.44% gc time)
+JSONTables.jl objecttable
+  0.427410 seconds (9.06 k allocations: 282.653 MiB, 6.66% gc time)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># Exclude JSON\narraytable arraytable due to much longer timing</span><span class="w"></span>
+<span class="n">groupedbar</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">repeat</span><span class="p">([</span><span class="s">&quot;CSV.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Serialization&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;JDF.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;JLSO.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Arrow.jl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Arrow.jl</span><span class="se">\n</span><span class="s">copy&quot;</span><span class="p">,</span><span class="w"> </span><span class="c">#&quot;JSON\narraytable&quot;,</span><span class="w"></span>
+<span class="w">            </span><span class="s">&quot;JSON</span><span class="se">\n</span><span class="s">objecttable&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">inner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">csvread1</span><span class="p">,</span><span class="w"> </span><span class="n">csvread2</span><span class="p">,</span><span class="w"> </span><span class="n">serializeread1</span><span class="p">,</span><span class="w"> </span><span class="n">serializeread2</span><span class="p">,</span><span class="w"> </span><span class="n">jdfread1</span><span class="p">,</span><span class="w"> </span><span class="n">jdfread2</span><span class="p">,</span><span class="w"> </span><span class="n">jlsoread1</span><span class="p">,</span><span class="w"> </span><span class="n">jlsoread2</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="n">arrowread1</span><span class="p">,</span><span class="w"> </span><span class="n">arrowread2</span><span class="p">,</span><span class="w"> </span><span class="n">arrowread1</span><span class="o">+</span><span class="n">arrowread1copy</span><span class="p">,</span><span class="w"> </span><span class="n">arrowread2</span><span class="o">+</span><span class="n">arrowread2copy</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="c"># jsontablesaread1, jsontablesaread2,</span><span class="w"></span>
+<span class="w">     </span><span class="n">jsontablesoread1</span><span class="p">,</span><span class="w"> </span><span class="n">jsontablesoread2</span><span class="p">],</span><span class="w">    </span>
+<span class="w">    </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repeat</span><span class="p">([</span><span class="s">&quot;1st&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2nd&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">outer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Second&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Read Performance</span><span class="se">\n</span><span class="s">DataFrame: bigdf</span><span class="se">\n</span><span class="s">Size: </span><span class="si">$</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">bigdf</span><span class="p">))</span><span class="s">&quot;</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/04_loadsave_70_0.svg" src="_images/04_loadsave_70_0.svg" /></div>
+</div>
+</section>
+<section id="using-gzip-compression">
+<h2>Using gzip compression<a class="headerlink" href="#using-gzip-compression" title="Permalink to this headline">#</a></h2>
+<p>A common user requirement is to be able to load and save CSV that are compressed using gzip. Below we show how this can be accomplished using <code class="docutils literal notranslate"><span class="pre">CodecZlib.jl</span></code>. The same pattern is applicable to <code class="docutils literal notranslate"><span class="pre">JSONTables.jl</span></code> compression/decompression.</p>
+<p>Again make sure that you do not have file named <code class="docutils literal notranslate"><span class="pre">df_compress_test.csv.gz</span></code> in your working directory.</p>
+<p>We first generate a random data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>10 rows × 1,000 columns (omitted printing of 988 columns)</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th><th>x9</th><th>x10</th><th>x11</th><th>x12</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>8</td><td>5</td><td>7</td><td>8</td><td>4</td><td>2</td><td>7</td><td>6</td><td>9</td><td>6</td><td>2</td><td>8</td></tr><tr><th>2</th><td>3</td><td>5</td><td>1</td><td>10</td><td>3</td><td>8</td><td>7</td><td>2</td><td>6</td><td>1</td><td>2</td><td>7</td></tr><tr><th>3</th><td>6</td><td>8</td><td>8</td><td>4</td><td>7</td><td>3</td><td>8</td><td>8</td><td>3</td><td>10</td><td>7</td><td>2</td></tr><tr><th>4</th><td>3</td><td>8</td><td>10</td><td>10</td><td>9</td><td>5</td><td>4</td><td>8</td><td>9</td><td>8</td><td>6</td><td>9</td></tr><tr><th>5</th><td>4</td><td>4</td><td>4</td><td>9</td><td>6</td><td>9</td><td>4</td><td>3</td><td>1</td><td>4</td><td>10</td><td>9</td></tr><tr><th>6</th><td>3</td><td>8</td><td>9</td><td>4</td><td>6</td><td>2</td><td>4</td><td>6</td><td>6</td><td>8</td><td>2</td><td>4</td></tr><tr><th>7</th><td>3</td><td>3</td><td>2</td><td>2</td><td>3</td><td>1</td><td>2</td><td>4</td><td>4</td><td>8</td><td>4</td><td>5</td></tr><tr><th>8</th><td>3</td><td>2</td><td>4</td><td>10</td><td>5</td><td>9</td><td>3</td><td>3</td><td>1</td><td>5</td><td>6</td><td>6</td></tr><tr><th>9</th><td>6</td><td>10</td><td>2</td><td>3</td><td>2</td><td>10</td><td>8</td><td>1</td><td>9</td><td>5</td><td>4</td><td>3</td></tr><tr><th>10</th><td>6</td><td>2</td><td>3</td><td>5</td><td>9</td><td>4</td><td>6</td><td>7</td><td>9</td><td>8</td><td>6</td><td>7</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># GzipCompressorStream comes from CodecZlib</span><span class="w"></span>
+
+<span class="n">open</span><span class="p">(</span><span class="s">&quot;df_compress_test.csv.gz&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">io</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GzipCompressorStream</span><span class="p">(</span><span class="n">io</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">CSV</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">df</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">transcode</span><span class="p">(</span><span class="n">GzipDecompressor</span><span class="p">,</span><span class="w"> </span><span class="n">Mmap</span><span class="o">.</span><span class="n">mmap</span><span class="p">(</span><span class="s">&quot;df_compress_test.csv.gz&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">DataFrame</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>10 rows × 1,000 columns (omitted printing of 988 columns)</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th><th>x9</th><th>x10</th><th>x11</th><th>x12</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>8</td><td>5</td><td>7</td><td>8</td><td>4</td><td>2</td><td>7</td><td>6</td><td>9</td><td>6</td><td>2</td><td>8</td></tr><tr><th>2</th><td>3</td><td>5</td><td>1</td><td>10</td><td>3</td><td>8</td><td>7</td><td>2</td><td>6</td><td>1</td><td>2</td><td>7</td></tr><tr><th>3</th><td>6</td><td>8</td><td>8</td><td>4</td><td>7</td><td>3</td><td>8</td><td>8</td><td>3</td><td>10</td><td>7</td><td>2</td></tr><tr><th>4</th><td>3</td><td>8</td><td>10</td><td>10</td><td>9</td><td>5</td><td>4</td><td>8</td><td>9</td><td>8</td><td>6</td><td>9</td></tr><tr><th>5</th><td>4</td><td>4</td><td>4</td><td>9</td><td>6</td><td>9</td><td>4</td><td>3</td><td>1</td><td>4</td><td>10</td><td>9</td></tr><tr><th>6</th><td>3</td><td>8</td><td>9</td><td>4</td><td>6</td><td>2</td><td>4</td><td>6</td><td>6</td><td>8</td><td>2</td><td>4</td></tr><tr><th>7</th><td>3</td><td>3</td><td>2</td><td>2</td><td>3</td><td>1</td><td>2</td><td>4</td><td>4</td><td>8</td><td>4</td><td>5</td></tr><tr><th>8</th><td>3</td><td>2</td><td>4</td><td>10</td><td>5</td><td>9</td><td>3</td><td>3</td><td>1</td><td>5</td><td>6</td><td>6</td></tr><tr><th>9</th><td>6</td><td>10</td><td>2</td><td>3</td><td>2</td><td>10</td><td>8</td><td>1</td><td>9</td><td>5</td><td>4</td><td>3</td></tr><tr><th>10</th><td>6</td><td>2</td><td>3</td><td>5</td><td>9</td><td>4</td><td>6</td><td>7</td><td>9</td><td>8</td><td>6</td><td>7</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">df2</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-zip-files">
+<h2>Using zip files<a class="headerlink" href="#using-zip-files" title="Permalink to this headline">#</a></h2>
+<p>Sometimes you may have files compressed inside a zip file.</p>
+<p>In such a situation you may use <a class="reference external" href="https://github.com/fhs/ZipFile.jl">ZipFile.jl</a> in conjunction an an appropriate reader to read the files.</p>
+<p>Here we first create a ZIP file and then read back its contents into a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>4</td><td>8</td><td>1</td><td>6</td></tr><tr><th>2</th><td>5</td><td>4</td><td>5</td><td>1</td></tr><tr><th>3</th><td>6</td><td>7</td><td>9</td><td>9</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>6</td><td>8</td><td>9</td><td>8</td></tr><tr><th>2</th><td>6</td><td>9</td><td>4</td><td>10</td></tr><tr><th>3</th><td>4</td><td>5</td><td>10</td><td>9</td></tr></tbody></table></div></div></div>
+</div>
+<p>And we show yet another way to write a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> into a CSV file</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># write a CSV file into the zip file</span><span class="w"></span>
+<span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ZipFile</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="s">&quot;x.zip&quot;</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ZipFile</span><span class="o">.</span><span class="n">addfile</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x1.csv&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">write</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span><span class="w"> </span><span class="n">sprint</span><span class="p">(</span><span class="n">show</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;text/csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">df1</span><span class="p">))</span><span class="w"></span>
+
+<span class="c"># write a second CSV file into zip file</span><span class="w"></span>
+<span class="n">f2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ZipFile</span><span class="o">.</span><span class="n">addfile</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="o">=</span><span class="n">ZipFile</span><span class="o">.</span><span class="n">Deflate</span><span class="p">)</span><span class="w"></span>
+<span class="n">write</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span><span class="w"> </span><span class="n">sprint</span><span class="p">(</span><span class="n">show</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;text/csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">df2</span><span class="p">))</span><span class="w"></span>
+
+<span class="n">close</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we read the CSV we have written:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ZipFile</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="s">&quot;x.zip&quot;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># find the index index of file called x1.csv</span><span class="w"></span>
+<span class="n">index_xcsv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">findfirst</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;x1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="o">.</span><span class="n">files</span><span class="p">)</span><span class="w"></span>
+<span class="c"># to read the x1.csv file in the zip file</span><span class="w"></span>
+<span class="n">df1_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="n">index_xcsv</span><span class="p">]),</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>4</td><td>8</td><td>1</td><td>6</td></tr><tr><th>2</th><td>5</td><td>4</td><td>5</td><td>1</td></tr><tr><th>3</th><td>6</td><td>7</td><td>9</td><td>9</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df1_2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">df1</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># find the index index of file called x2.csv</span><span class="w"></span>
+<span class="n">index_xcsv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">findfirst</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;x2.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="o">.</span><span class="n">files</span><span class="p">)</span><span class="w"></span>
+<span class="c"># to read the x2.csv file in the zip file</span><span class="w"></span>
+<span class="n">df2_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSV</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="n">index_xcsv</span><span class="p">]),</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>6</td><td>8</td><td>9</td><td>8</td></tr><tr><th>2</th><td>6</td><td>9</td><td>4</td><td>10</td></tr><tr><th>3</th><td>4</td><td>5</td><td>10</td><td>9</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df2_2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">df2</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that once you read a given file from <code class="docutils literal notranslate"><span class="pre">z</span></code> object its stream is all used-up (it is at its end). Therefore to read it again you need to close <code class="docutils literal notranslate"><span class="pre">z</span></code> and open it again.</p>
+<p>Also do not forget to close the zip file once done.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, let’s clean up. Do not run the next cell unless you are sure that it will not erase your important files.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">foreach</span><span class="p">(</span><span class="n">rm</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;x1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x.bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x.jlso&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x1.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2.json&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="s">&quot;bigdf1.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf.bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf.jlso&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf1.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bigdf2.json&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">             </span><span class="s">&quot;x.zip&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">rm</span><span class="p">(</span><span class="s">&quot;bigdf.jdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">recursive</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+<span class="n">rm</span><span class="p">(</span><span class="s">&quot;x.jdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">recursive</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that we did not remove <code class="docutils literal notranslate"><span class="pre">x.arrow</span></code> and <code class="docutils literal notranslate"><span class="pre">bigdf.arrow</span></code> and <code class="docutils literal notranslate"><span class="pre">df_compress_test.csv.gz</span></code> - you have to do it manually, as these files are memory mapped.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.7"
+        },
+        kernelOptions: {
+            kernelName: "julia-1.7",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.7'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="03_missingvalues.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Handling missing values</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="05_columns.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Manipulating columns of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Wen-Wei Tseng<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

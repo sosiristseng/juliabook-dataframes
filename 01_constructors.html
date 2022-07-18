@@ -1,0 +1,1294 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Constructors and conversion &#8212; Julia DataFrames</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Basic information about a data frame" href="02_basicinfo.html" />
+    <link rel="prev" title="Julia DataFrames Example" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Julia DataFrames</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Julia DataFrames Example
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Constructors and conversion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02_basicinfo.html">
+   Basic information about a data frame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03_missingvalues.html">
+   Handling missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04_loadsave.html">
+   Load and save DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05_columns.html">
+   Manipulating columns of a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06_rows.html">
+   Manipulating rows of DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="07_factors.html">
+   Working with CategoricalArrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="08_joins.html">
+   Joining DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="09_reshaping.html">
+   Reshaping DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="10_transforms.html">
+   Transformation to DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11_performance.html">
+   Performance tips
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12_pitfalls.html">
+   Possible pitfalls
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="13_extras.html">
+   DataFrames Extras
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/sosiristseng/juliabook-dataframes/main?urlpath=tree/docs/01_constructors.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/sosiristseng/juliabook-dataframes"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/01_constructors.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constructors">
+   Constructors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conversion-to-a-matrix">
+   Conversion to a matrix
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conversion-to-namedtuple-related-tabular-structures">
+   Conversion to
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     NamedTuple
+    </span>
+   </code>
+   related tabular structures
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#iterating-data-frame-by-rows-or-columns">
+   Iterating data frame by rows or columns
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#handling-of-duplicate-column-names">
+     Handling of duplicate column names
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Constructors and conversion</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constructors">
+   Constructors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conversion-to-a-matrix">
+   Conversion to a matrix
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conversion-to-namedtuple-related-tabular-structures">
+   Conversion to
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     NamedTuple
+    </span>
+   </code>
+   related tabular structures
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#iterating-data-frame-by-rows-or-columns">
+   Iterating data frame by rows or columns
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#handling-of-duplicate-column-names">
+     Handling of duplicate column names
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="constructors-and-conversion">
+<h1>Constructors and conversion<a class="headerlink" href="#constructors-and-conversion" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">DataFrames</span><span class="p">,</span><span class="w"> </span><span class="n">Random</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">#</a></h2>
+<p>In this section, you’ll see many ways to create a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> using the <code class="docutils literal notranslate"><span class="pre">DataFrame()</span></code> constructor.</p>
+<p>First, we could create an empty DataFrame,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>0 rows × 0 columns</p><table class="data-frame"><thead><tr><th></th></tr><tr><th></th></tr></thead><tbody></tbody></table></div></div></div>
+</div>
+<p>Or we could call the constructor using keyword arguments to add columns to the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">C</span><span class="o">=</span><span class="n">randstring</span><span class="o">.</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]),</span><span class="w"> </span><span class="n">fixed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>fixed</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="String">String</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>0.238249</td><td>mdZ</td><td>1</td></tr><tr><th>2</th><td>2</td><td>0.235851</td><td>xb3</td><td>1</td></tr><tr><th>3</th><td>3</td><td>0.508729</td><td>5EV</td><td>1</td></tr></tbody></table></div></div></div>
+</div>
+<p>note in column <code class="docutils literal notranslate"><span class="pre">:fixed</span></code> that scalars get automatically broadcasted.</p>
+<p>We can create a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> from a dictionary, in which case keys from the dictionary will be sorted to create the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Dict</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">],</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;b&#39;</span><span class="p">],</span><span class="w"> </span><span class="s">&quot;fixed&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">Ref</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span><span class="w"></span>
+<span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>fixed</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Bool">Bool</th><th title="Char">Char</th><th title="Vector{Int64}">Array…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>a</td><td>[1, 1]</td></tr><tr><th>2</th><td>2</td><td>0</td><td>b</td><td>[1, 1]</td></tr></tbody></table></div></div></div>
+</div>
+<p>This time we used <code class="docutils literal notranslate"><span class="pre">Ref</span></code> to protect a vector from being treated as a column and forcing broadcasting it into every row of <code class="docutils literal notranslate"><span class="pre">:fixed</span></code> column (note that the <code class="docutils literal notranslate"><span class="pre">[1,1]</span></code> vector is aliased in each row).</p>
+<p>Rather than explicitly creating a dictionary first, as above, we could pass <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> arguments with the syntax of dictionary key-value pairs.</p>
+<p>Note that in this case, we use <code class="docutils literal notranslate"><span class="pre">Symbol</span></code>s to denote the column names and arguments are not sorted. For example, <code class="docutils literal notranslate"><span class="pre">:A</span></code>, the symbol, produces <code class="docutils literal notranslate"><span class="pre">A</span></code>, the name of the first column here:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="ss">:A</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="ss">:B</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">],</span><span class="w"> </span><span class="ss">:C</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;b&#39;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Bool">Bool</th><th title="Char">Char</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>a</td></tr><tr><th>2</th><td>2</td><td>0</td><td>b</td></tr></tbody></table></div></div></div>
+</div>
+<p>Although, in general, using <code class="docutils literal notranslate"><span class="pre">Symbol</span></code>s rather than strings to denote column names is preferred (as it is faster) DataFrames.jl accepts passing strings as column names, so this also works:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">],</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;b&#39;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Bool">Bool</th><th title="Char">Char</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>a</td></tr><tr><th>2</th><td>2</td><td>0</td><td>b</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can also pass a vector of pairs, which is useful if it is constructed programatically:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">([</span><span class="ss">:A</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="ss">:B</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">],</span><span class="w"> </span><span class="ss">:C</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;b&#39;</span><span class="p">],</span><span class="w"> </span><span class="ss">:fixed</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">&quot;const&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>fixed</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Bool">Bool</th><th title="Char">Char</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>a</td><td>const</td></tr><tr><th>2</th><td>2</td><td>0</td><td>b</td><td>const</td></tr></tbody></table></div></div></div>
+</div>
+<p>Here we create a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> from a vector of vectors, and each vector becomes a column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">([</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.78812</td><td>0.254276</td><td>0.0116206</td></tr><tr><th>2</th><td>0.573951</td><td>0.139846</td><td>0.29841</td></tr><tr><th>3</th><td>0.369819</td><td>0.376643</td><td>0.755684</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">([</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="ss">:x1</span><span class="p">,</span><span class="w"> </span><span class="ss">:x2</span><span class="p">,</span><span class="w"> </span><span class="ss">:x3</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.706227</td><td>0.657265</td><td>0.939951</td></tr><tr><th>2</th><td>0.185834</td><td>0.882012</td><td>0.220432</td></tr><tr><th>3</th><td>0.619543</td><td>0.00795792</td><td>0.29587</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">([</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;x1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x3&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.198392</td><td>0.47195</td><td>0.194248</td></tr><tr><th>2</th><td>0.736697</td><td>0.382523</td><td>0.631929</td></tr><tr><th>3</th><td>0.637476</td><td>0.377318</td><td>0.124781</td></tr></tbody></table></div></div></div>
+</div>
+<p>As you can see you either pass a vector of column names as a second argument or <code class="docutils literal notranslate"><span class="pre">:auto</span></code> in which case column names are generated automatically.</p>
+<p>In particular it is not allowed to pass a vector of scalars to <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> constructor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">ArgumentError</span>: &#39;Vector{Int64}&#39; iterates &#39;Int64&#39; values, which doesn&#39;t satisfy the Tables.jl `AbstractRow` interface
+
+<span class="ne">Stacktrace</span>:
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">invalidtable</span><span class="p">(</span><span class="c1">#unused#::Vector{Int64}, #unused#::Int64)</span>
+   <span class="o">@</span> <span class="n">Tables</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">Tables</span><span class="o">/</span><span class="n">PxO1m</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">tofromdatavalues</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">42</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">iterate</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">Tables</span><span class="o">/</span><span class="n">PxO1m</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">tofromdatavalues</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">48</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="n">buildcolumns</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">Tables</span><span class="o">/</span><span class="n">PxO1m</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">fallbacks</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">197</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="n">columns</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">Tables</span><span class="o">/</span><span class="n">PxO1m</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">fallbacks</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">260</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="n">Int64</span><span class="p">};</span> <span class="n">copycols</span><span class="p">::</span><span class="n">Nothing</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">other</span><span class="o">/</span><span class="n">tables</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">58</span>
+ <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="n">Int64</span><span class="p">})</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">other</span><span class="o">/</span><span class="n">tables</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">49</span>
+ <span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span>
+   <span class="o">@</span> <span class="n">In</span><span class="p">[</span><span class="mi">11</span><span class="p">]:</span><span class="mi">1</span>
+ <span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="nb">eval</span>
+   <span class="o">@</span> <span class="o">./</span><span class="n">boot</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">373</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="n">include_string</span><span class="p">(</span><span class="n">mapexpr</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">REPL</span><span class="o">.</span><span class="n">softscope</span><span class="p">),</span> <span class="n">mod</span><span class="p">::</span><span class="n">Module</span><span class="p">,</span> <span class="n">code</span><span class="p">::</span><span class="n">String</span><span class="p">,</span> <span class="n">filename</span><span class="p">::</span><span class="n">String</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">Base</span> <span class="o">./</span><span class="n">loading</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">1196</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Instead use a transposed vector if you have a vector of single values (in this way you effectively pass a two dimensional array to the constructor which is supported the same way as in vector of vectors case).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">permutedims</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>1 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>2</td><td>3</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can also pass a vector of <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code>s to construct a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mi">4</span><span class="p">)]</span><span class="w"></span>
+<span class="n">DataFrame</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>2</td></tr><tr><th>2</th><td>3</td><td>4</td></tr></tbody></table></div></div></div>
+</div>
+<p>Alternatively you can pass a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> of vectors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mi">11</span><span class="o">:</span><span class="mi">13</span><span class="p">)</span><span class="w"></span>
+<span class="n">DataFrame</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>11</td></tr><tr><th>2</th><td>2</td><td>12</td></tr><tr><th>3</th><td>3</td><td>13</td></tr></tbody></table></div></div></div>
+</div>
+<p>Here we create a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> from a matrix,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.492867</td><td>0.651577</td><td>0.0252425</td><td>0.173003</td></tr><tr><th>2</th><td>0.42353</td><td>0.273145</td><td>0.612005</td><td>0.25222</td></tr><tr><th>3</th><td>0.0244545</td><td>0.880866</td><td>0.542176</td><td>0.321713</td></tr></tbody></table></div></div></div>
+</div>
+<p>and here we do the same but also pass column names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="kt">Symbol</span><span class="o">.</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;d&#39;</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th><th>c</th><th>d</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.769194</td><td>0.683413</td><td>0.58497</td><td>0.301841</td></tr><tr><th>2</th><td>0.328581</td><td>0.489061</td><td>0.571682</td><td>0.223876</td></tr><tr><th>3</th><td>0.563582</td><td>0.61482</td><td>0.731366</td><td>0.382903</td></tr></tbody></table></div></div></div>
+</div>
+<p>or</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="n">string</span><span class="o">.</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;d&#39;</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>3 rows × 4 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th><th>c</th><th>d</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.824318</td><td>0.895055</td><td>0.465086</td><td>0.977073</td></tr><tr><th>2</th><td>0.651123</td><td>0.330905</td><td>0.408493</td><td>0.969853</td></tr><tr><th>3</th><td>0.0266979</td><td>0.438559</td><td>0.242647</td><td>0.247598</td></tr></tbody></table></div></div></div>
+</div>
+<p>This is how you can create a data frame with no rows, but with predefined columns and their types:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="kt">Int</span><span class="p">[],</span><span class="w"> </span><span class="n">B</span><span class="o">=</span><span class="kt">Float64</span><span class="p">[],</span><span class="w"> </span><span class="n">C</span><span class="o">=</span><span class="kt">String</span><span class="p">[])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>0 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="String">String</th></tr></thead><tbody></tbody></table></div></div></div>
+</div>
+<p>Finally, we can create a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> by copying an existing <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">copy</span></code> also copies the vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;b&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">isequal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="o">.</span><span class="n">a</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">y</span><span class="o">.</span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(false, true, true, false)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> on a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> object works like <code class="docutils literal notranslate"><span class="pre">copy</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;b&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">isequal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="o">.</span><span class="n">a</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">y</span><span class="o">.</span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(false, true, true, false)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can avoid copying of columns of a data frame (if it is possible) by passing <code class="docutils literal notranslate"><span class="pre">copycols=false</span></code> keyword argument:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;b&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">copycols</span><span class="o">=</span><span class="nb">false</span><span class="p">)</span><span class="w"></span>
+<span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">isequal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="o">.</span><span class="n">a</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">y</span><span class="o">.</span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(false, true, true, true)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The same rule applies to other constructors</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"></span>
+<span class="n">df1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+<span class="n">df2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">copycols</span><span class="o">=</span><span class="nb">false</span><span class="p">)</span><span class="w"></span>
+<span class="n">df1</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">df2</span><span class="o">.</span><span class="n">a</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">a</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(false, true)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can create a similar uninitialized <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> based on an original one:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>1 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1.0</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">similar</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>1 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>21474836484</td><td>6.92322e-310</td></tr></tbody></table></div></div></div>
+</div>
+<p>number of rows in a new DataFrame can be passed as a second argument</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">similar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>0 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">similar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0</td><td>5.0e-324</td></tr><tr><th>2</th><td>0</td><td>0.0</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can also create a new <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> from <code class="docutils literal notranslate"><span class="pre">SubDataFrame</span></code> or <code class="docutils literal notranslate"><span class="pre">DataFrameRow</span></code> (discussed in detail later in the tutorial; in particular although <code class="docutils literal notranslate"><span class="pre">DataFrameRow</span></code> is considered a 1-dimensional object similar to a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> it gets converted to a 1-row <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> for convinience)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="o">:</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1.0</td></tr><tr><th>2</th><td>1</td><td>1.0</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">typeof</span><span class="p">(</span><span class="n">sdf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SubDataFrame{DataFrame, DataFrames.Index, Vector{Int64}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sdf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1.0</td></tr><tr><th>2</th><td>1</td><td>1.0</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">dfr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">:</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><p>DataFrameRow (2 columns)</p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1.0</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dfr</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>1 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>b</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1.0</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="conversion-to-a-matrix">
+<h2>Conversion to a matrix<a class="headerlink" href="#conversion-to-a-matrix" title="Permalink to this headline">#</a></h2>
+<p>Let’s start by creating a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> with two rows and two columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>A</td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<p>We can create a matrix by passing this <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> to <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> or <code class="docutils literal notranslate"><span class="pre">Array</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Matrix</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×2 Matrix{Any}:
+ 1  &quot;A&quot;
+ 2  &quot;B&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×2 Matrix{Any}:
+ 1  &quot;A&quot;
+ 2  &quot;B&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>This would work even if the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> had some <code class="docutils literal notranslate"><span class="pre">missing</span></code>s:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="nb">missing</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td><em>missing</em></td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Matrix</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×2 Matrix{Any}:
+ 1  missing
+ 2  &quot;B&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the two previous matrix examples, Julia created matrices with elements of type <code class="docutils literal notranslate"><span class="pre">Any</span></code>. We can see more clearly that the type of matrix is inferred when we pass, for example, a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> of integers to <code class="docutils literal notranslate"><span class="pre">Matrix</span></code>, creating a 2D <code class="docutils literal notranslate"><span class="pre">Array</span></code> of <code class="docutils literal notranslate"><span class="pre">Int64</span></code>s:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">3</span><span class="o">:</span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>3</td></tr><tr><th>2</th><td>2</td><td>4</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Matrix</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×2 Matrix{Int64}:
+ 1  3
+ 2  4
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this next example, Julia correctly identifies that <code class="docutils literal notranslate"><span class="pre">Union</span></code> is needed to express the type of the resulting <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> (which contains <code class="docutils literal notranslate"><span class="pre">missing</span></code>s).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="nb">missing</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Union{Missing, Int64}">Int64?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td><em>missing</em></td></tr><tr><th>2</th><td>2</td><td>4</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Matrix</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×2 Matrix{Union{Missing, Int64}}:
+ 1   missing
+ 2  4
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that we can’t force a conversion of <code class="docutils literal notranslate"><span class="pre">missing</span></code> values to <code class="docutils literal notranslate"><span class="pre">Int</span></code>s!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Matrix</span><span class="p">{</span><span class="kt">Int</span><span class="p">}(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">ArgumentError</span>: cannot convert a DataFrame containing missing values to Matrix{Int64} (found for column y)
+
+<span class="ne">Stacktrace</span>:
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Matrix</span><span class="p">{</span><span class="n">Int64</span><span class="p">}(</span><span class="n">df</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">abstractdataframe</span><span class="o">/</span><span class="n">abstractdataframe</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">1259</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span>
+   <span class="o">@</span> <span class="n">In</span><span class="p">[</span><span class="mi">41</span><span class="p">]:</span><span class="mi">1</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="nb">eval</span>
+   <span class="o">@</span> <span class="o">./</span><span class="n">boot</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">373</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="n">include_string</span><span class="p">(</span><span class="n">mapexpr</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">REPL</span><span class="o">.</span><span class="n">softscope</span><span class="p">),</span> <span class="n">mod</span><span class="p">::</span><span class="n">Module</span><span class="p">,</span> <span class="n">code</span><span class="p">::</span><span class="n">String</span><span class="p">,</span> <span class="n">filename</span><span class="p">::</span><span class="n">String</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">Base</span> <span class="o">./</span><span class="n">loading</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">1196</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="conversion-to-namedtuple-related-tabular-structures">
+<h2>Conversion to <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> related tabular structures<a class="headerlink" href="#conversion-to-namedtuple-related-tabular-structures" title="Permalink to this headline">#</a></h2>
+<p>First define some data frame</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>A</td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<p>Now we convert a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> into a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> of vectors</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">ct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tables</span><span class="o">.</span><span class="n">columntable</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(x = [1, 2], y = [&quot;A&quot;, &quot;B&quot;])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we convert it into a vector of <code class="docutils literal notranslate"><span class="pre">NamedTuples</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">rt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tables</span><span class="o">.</span><span class="n">rowtable</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-element Vector{NamedTuple{(:x, :y), Tuple{Int64, String}}}:
+ (x = 1, y = &quot;A&quot;)
+ (x = 2, y = &quot;B&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can perform the conversions back to a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> using a standard constructor call:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>A</td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>A</td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="iterating-data-frame-by-rows-or-columns">
+<h2>Iterating data frame by rows or columns<a class="headerlink" href="#iterating-data-frame-by-rows-or-columns" title="Permalink to this headline">#</a></h2>
+<p>Sometimes it is useful to create a wrapper around a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> that produces its rows or columns.</p>
+<p>For iterating columns you can use the <code class="docutils literal notranslate"><span class="pre">eachcol</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">ec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eachcol</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><p>2×2 DataFrameColumns</p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>A</td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DataFrameColumns</span></code> object behaves as a vector (note though it is not <code class="docutils literal notranslate"><span class="pre">AbstractVector</span></code>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">ec</span><span class="w"> </span><span class="k">isa</span><span class="w"> </span><span class="kt">AbstractVector</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>false
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">ec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-element Vector{Int64}:
+ 1
+ 2
+</pre></div>
+</div>
+</div>
+</div>
+<p>but you can also index into it using column names:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">ec</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-element Vector{Int64}:
+ 1
+ 2
+</pre></div>
+</div>
+</div>
+</div>
+<p>similarly <code class="docutils literal notranslate"><span class="pre">eachrow</span></code> creates a <code class="docutils literal notranslate"><span class="pre">DataFrameRows</span></code> object that is a vector of its rows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">er</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eachrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><p>2×2 DataFrameRows</p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>A</td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DataFrameRows</span></code> is an <code class="docutils literal notranslate"><span class="pre">AbstractVector</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">er</span><span class="w"> </span><span class="k">isa</span><span class="w"> </span><span class="kt">AbstractVector</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">er</span><span class="p">[</span><span class="k">end</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><p>DataFrameRow (2 columns)</p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<p>Note that both data frame and also <code class="docutils literal notranslate"><span class="pre">DataFrameColumns</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFrameRows</span></code> objects are not type stable (they do not know the types of their columns). This is useful to avoid compilation cost if you have very wide data frames with heterogenous column types.</p>
+<p>However, often (especially if a data frame is narrows) it is useful to create a lazy iterator that produces <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code>s for each row of the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>. Its key benefit is that it is type stable (so it is useful when you want to perform some operations in a fast way on a small subset of columns of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> - this strategy is often used internally by DataFrames.jl package):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">nti</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tables</span><span class="o">.</span><span class="n">namedtupleiterator</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tables.NamedTupleIterator{Tables.Schema{(:x, :y), Tuple{Int64, String}}, Tables.RowIterator{NamedTuple{(:x, :y), Tuple{Vector{Int64}, Vector{String}}}}}(Tables.RowIterator{NamedTuple{(:x, :y), Tuple{Vector{Int64}, Vector{String}}}}((x = [1, 2], y = [&quot;A&quot;, &quot;B&quot;]), 2))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">enumerate</span><span class="p">(</span><span class="n">nti</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nd">@show</span><span class="w"> </span><span class="n">row</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>row = (1, (x = 1, y = &quot;A&quot;))
+row = (2, (x = 2, y = &quot;B&quot;))
+</pre></div>
+</div>
+</div>
+</div>
+<p>similarly to the previous options you can easily convert <code class="docutils literal notranslate"><span class="pre">NamedTupleIterator</span></code> back to a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">nti</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>A</td></tr><tr><th>2</th><td>2</td><td>B</td></tr></tbody></table></div></div></div>
+</div>
+<section id="handling-of-duplicate-column-names">
+<h3>Handling of duplicate column names<a class="headerlink" href="#handling-of-duplicate-column-names" title="Permalink to this headline">#</a></h3>
+<p>We can pass the <code class="docutils literal notranslate"><span class="pre">makeunique</span></code> keyword argument to allow passing duplicate names (they get deduplicated)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="ss">:a</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">:a</span><span class="o">=&gt;</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">:a_1</span><span class="o">=&gt;</span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">makeunique</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>1 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>a</th><th>a_2</th><th>a_1</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>2</td><td>3</td></tr></tbody></table></div></div></div>
+</div>
+<p>Otherwise, duplicates are not allowed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="ss">:a</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">:a</span><span class="o">=&gt;</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">:a_1</span><span class="o">=&gt;</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">ArgumentError</span>: Duplicate variable names: :a. Pass makeunique=true to make them unique using a suffix automatically.
+
+<span class="ne">Stacktrace</span>:
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">make_unique</span><span class="o">!(</span>names::Vector<span class="o">{</span>Symbol<span class="o">}</span>, src::Vector<span class="o">{</span>Symbol<span class="o">}</span><span class="p">;</span> makeunique::Bool<span class="o">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">other</span><span class="o">/</span><span class="n">utils</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">83</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#make_unique#2</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">other</span><span class="o">/</span><span class="n">utils</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">105</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#Index#5</span>
+   <span class="o">@</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">other</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">27</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="n">DataFrame</span><span class="p">(::</span><span class="n">Pair</span><span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">Int64</span><span class="p">},</span> <span class="p">::</span><span class="n">Vararg</span><span class="p">{</span><span class="n">Pair</span><span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">Int64</span><span class="p">}};</span> <span class="n">makeunique</span><span class="p">::</span><span class="n">Bool</span><span class="p">,</span> <span class="n">copycols</span><span class="p">::</span><span class="n">Bool</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">dataframe</span><span class="o">/</span><span class="n">dataframe</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">247</span>
+ <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="n">DataFrame</span><span class="p">(::</span><span class="n">Pair</span><span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">Int64</span><span class="p">},</span> <span class="p">::</span><span class="n">Vararg</span><span class="p">{</span><span class="n">Pair</span><span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">Int64</span><span class="p">}})</span>
+   <span class="o">@</span> <span class="n">DataFrames</span> <span class="o">~/.</span><span class="n">julia</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">DataFrames</span><span class="o">/</span><span class="n">zqFGs</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">dataframe</span><span class="o">/</span><span class="n">dataframe</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">245</span>
+ <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span>
+   <span class="o">@</span> <span class="n">In</span><span class="p">[</span><span class="mi">58</span><span class="p">]:</span><span class="mi">1</span>
+ <span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="nb">eval</span>
+   <span class="o">@</span> <span class="o">./</span><span class="n">boot</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">373</span> <span class="p">[</span><span class="n">inlined</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="n">include_string</span><span class="p">(</span><span class="n">mapexpr</span><span class="p">::</span><span class="n">typeof</span><span class="p">(</span><span class="n">REPL</span><span class="o">.</span><span class="n">softscope</span><span class="p">),</span> <span class="n">mod</span><span class="p">::</span><span class="n">Module</span><span class="p">,</span> <span class="n">code</span><span class="p">::</span><span class="n">String</span><span class="p">,</span> <span class="n">filename</span><span class="p">::</span><span class="n">String</span><span class="p">)</span>
+   <span class="o">@</span> <span class="n">Base</span> <span class="o">./</span><span class="n">loading</span><span class="o">.</span><span class="n">jl</span><span class="p">:</span><span class="mi">1196</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Observe that currently <code class="docutils literal notranslate"><span class="pre">nothing</span></code> is not printed when displaying a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> in Jupyter Notebook:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">nothing</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="nb">nothing</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">z</span><span class="o">=</span><span class="p">[</span><span class="nb">missing</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;c&quot;</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th><th>z</th></tr><tr><th></th><th title="Union{Nothing, Int64}">Union…</th><th title="Union{Nothing, String}">Union…</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td></td><td><em>missing</em></td></tr><tr><th>2</th><td></td><td>a</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<p>Finally you can use <code class="docutils literal notranslate"><span class="pre">empty</span></code> and <code class="docutils literal notranslate"><span class="pre">empty!</span></code> functions to remove all rows from a data frame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">empty</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>0 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th><th>z</th></tr><tr><th></th><th title="Union{Nothing, Int64}">Union…</th><th title="Union{Nothing, String}">Union…</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>2 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th><th>z</th></tr><tr><th></th><th title="Union{Nothing, Int64}">Union…</th><th title="Union{Nothing, String}">Union…</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody><tr><th>1</th><td>1</td><td></td><td><em>missing</em></td></tr><tr><th>2</th><td></td><td>a</td><td>c</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">empty!</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>0 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th><th>z</th></tr><tr><th></th><th title="Union{Nothing, Int64}">Union…</th><th title="Union{Nothing, String}">Union…</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>0 rows × 3 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th><th>z</th></tr><tr><th></th><th title="Union{Nothing, Int64}">Union…</th><th title="Union{Nothing, String}">Union…</th><th title="Union{Missing, String}">String?</th></tr></thead><tbody></tbody></table></div></div></div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.7"
+        },
+        kernelOptions: {
+            kernelName: "julia-1.7",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.7'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Julia DataFrames Example</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="02_basicinfo.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Basic information about a data frame</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Wen-Wei Tseng<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

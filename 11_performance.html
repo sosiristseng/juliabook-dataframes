@@ -1,0 +1,1020 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Performance tips &#8212; Julia DataFrames</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Possible pitfalls" href="12_pitfalls.html" />
+    <link rel="prev" title="Transformation to DataFrames" href="10_transforms.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Julia DataFrames</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Julia DataFrames Example
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01_constructors.html">
+   Constructors and conversion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02_basicinfo.html">
+   Basic information about a data frame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03_missingvalues.html">
+   Handling missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04_loadsave.html">
+   Load and save DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05_columns.html">
+   Manipulating columns of a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06_rows.html">
+   Manipulating rows of DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="07_factors.html">
+   Working with CategoricalArrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="08_joins.html">
+   Joining DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="09_reshaping.html">
+   Reshaping DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="10_transforms.html">
+   Transformation to DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Performance tips
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12_pitfalls.html">
+   Possible pitfalls
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="13_extras.html">
+   DataFrames Extras
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/sosiristseng/juliabook-dataframes/main?urlpath=tree/docs/11_performance.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/sosiristseng/juliabook-dataframes"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/11_performance.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#access-by-column-number-is-faster-than-by-name">
+   Access by column number is faster than by name
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#when-working-with-data-dataframe-use-barrier-functions-or-type-annotation">
+   When working with data
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+   use barrier functions or type annotation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#consider-using-delayed-dataframe-creation-technique">
+   Consider using delayed
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+   creation technique
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#you-can-add-rows-to-a-dataframe-in-place-and-it-is-fast">
+   You can add rows to a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+   in place and it is fast
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#allowing-missing-as-well-as-categorical-slows-down-computations">
+   Allowing
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     missing
+    </span>
+   </code>
+   as well as
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     categorical
+    </span>
+   </code>
+   slows down computations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#when-aggregating-use-column-selector-and-prefer-integer-categorical-or-pooled-array-grouping-variable">
+   When aggregating use column selector and prefer integer, categorical, or pooled array grouping variable
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-views-instead-of-materializing-a-new-dataframe">
+   Use views instead of materializing a new DataFrame
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Performance tips</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#access-by-column-number-is-faster-than-by-name">
+   Access by column number is faster than by name
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#when-working-with-data-dataframe-use-barrier-functions-or-type-annotation">
+   When working with data
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+   use barrier functions or type annotation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#consider-using-delayed-dataframe-creation-technique">
+   Consider using delayed
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+   creation technique
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#you-can-add-rows-to-a-dataframe-in-place-and-it-is-fast">
+   You can add rows to a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     DataFrame
+    </span>
+   </code>
+   in place and it is fast
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#allowing-missing-as-well-as-categorical-slows-down-computations">
+   Allowing
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     missing
+    </span>
+   </code>
+   as well as
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     categorical
+    </span>
+   </code>
+   slows down computations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#when-aggregating-use-column-selector-and-prefer-integer-categorical-or-pooled-array-grouping-variable">
+   When aggregating use column selector and prefer integer, categorical, or pooled array grouping variable
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-views-instead-of-materializing-a-new-dataframe">
+   Use views instead of materializing a new DataFrame
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="performance-tips">
+<h1>Performance tips<a class="headerlink" href="#performance-tips" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">DataFrames</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">BenchmarkTools</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">CategoricalArrays</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">PooledArrays</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="access-by-column-number-is-faster-than-by-name">
+<h2>Access by column number is faster than by name<a class="headerlink" href="#access-by-column-number-is-faster-than-by-name" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="o">$</span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">];</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="o">$</span><span class="n">x</span><span class="o">.</span><span class="n">x500</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  2.480 ns (0 allocations: 0 bytes)
+  18.536 ns (1 allocation: 32 bytes)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="when-working-with-data-dataframe-use-barrier-functions-or-type-annotation">
+<h2>When working with data <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> use barrier functions or type annotation<a class="headerlink" href="#when-working-with-data-dataframe-use-barrier-functions-or-type-annotation" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Random</span><span class="w"></span>
+<span class="k">function</span><span class="w"> </span><span class="n">f_bad</span><span class="p">()</span><span class="w"> </span><span class="c"># this function will be slow</span><span class="w"></span>
+<span class="w">    </span><span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">p</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f_bad</span><span class="p">();</span><span class="w"></span>
+<span class="c"># if you run @code_warntype f_bad() then you notice</span><span class="w"></span>
+<span class="c"># that Julia does not know column types of `DataFrame`</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  84.815 ms (5999017 allocations: 122.06 MiB)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># solution 1 is to use barrier function (it should be possible to use it in almost any code)</span><span class="w"></span>
+<span class="k">function</span><span class="w"> </span><span class="n">f_inner</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="n">p</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"></span>
+<span class="w">   </span><span class="k">end</span><span class="w"></span>
+<span class="w">   </span><span class="n">p</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">f_barrier</span><span class="p">()</span><span class="w"> </span><span class="c"># extract the work to an inner function</span><span class="w"></span>
+<span class="w">    </span><span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">f_inner</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">])</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">LinearAlgebra</span><span class="w"></span>
+<span class="k">function</span><span class="w"> </span><span class="n">f_inbuilt</span><span class="p">()</span><span class="w"> </span><span class="c"># or use inbuilt function if possible</span><span class="w"></span>
+<span class="w">    </span><span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">])</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f_barrier</span><span class="p">();</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f_inbuilt</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4.493 ms (37 allocations: 30.52 MiB)
+  4.464 ms (37 allocations: 30.52 MiB)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># solution 2 is to provide the types of extracted columns</span><span class="w"></span>
+<span class="c"># it is simpler but there are cases in which you will not know these types</span><span class="w"></span>
+<span class="c"># This example  assumes that you have DataFrames master at least from August 31, 2018</span><span class="w"></span>
+<span class="k">function</span><span class="w"> </span><span class="n">f_typed</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">y</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span><span class="w"> </span><span class="n">z</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">p</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f_typed</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  5.087 ms (37 allocations: 30.52 MiB)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In general for tall and narrow tables it is often useful to use <code class="docutils literal notranslate"><span class="pre">Tables.rowtable</span></code>, <code class="docutils literal notranslate"><span class="pre">Tables.columntable</span></code> or <code class="docutils literal notranslate"><span class="pre">Tables.namedtupleiterator</span></code> for intermediate processing of data in a type-stable way.</p>
+</section>
+<section id="consider-using-delayed-dataframe-creation-technique">
+<h2>Consider using delayed <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> creation technique<a class="headerlink" href="#consider-using-delayed-dataframe-creation-technique" title="Permalink to this headline">#</a></h2>
+<p>also notice the difference in performance between copying vs non-copying data frame creation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">f1</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">([</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">^</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">100</span><span class="p">],</span><span class="w"> </span><span class="ss">:auto</span><span class="p">,</span><span class="w"> </span><span class="n">copycols</span><span class="o">=</span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="c"># we work with a DataFrame directly</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">d</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">f1a</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">([</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">^</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">100</span><span class="p">],</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"> </span><span class="c"># we work with a DataFrame directly</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">d</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">f2</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Any</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">^</span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">d</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="k">end</span><span class="w"></span>
+<span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="ss">:auto</span><span class="p">,</span><span class="w"> </span><span class="n">copycols</span><span class="o">=</span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="c"># we delay creation of DataFrame after we have our job done</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">f2a</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Any</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">^</span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">d</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="k">end</span><span class="w"></span>
+<span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"> </span><span class="c"># we delay creation of DataFrame after we have our job done</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f1</span><span class="p">();</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f1a</span><span class="p">();</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f2</span><span class="p">();</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="n">f2a</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  23.844 ms (1949523 allocations: 37.40 MiB)
+  26.127 ms (1949723 allocations: 45.03 MiB)
+  1.688 ms (623 allocations: 7.66 MiB)
+  2.451 ms (823 allocations: 15.30 MiB)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="you-can-add-rows-to-a-dataframe-in-place-and-it-is-fast">
+<h2>You can add rows to a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> in place and it is fast<a class="headerlink" href="#you-can-add-rows-to-a-dataframe-in-place-and-it-is-fast" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="o">^</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">transpose</span><span class="p">(</span><span class="mf">1.0</span><span class="o">:</span><span class="mf">5.0</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+<span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="o">:</span><span class="mf">5.0</span><span class="p">;]</span><span class="w"></span>
+
+<span class="nd">@btime</span><span class="w"> </span><span class="n">vcat</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">y</span><span class="p">);</span><span class="w"> </span><span class="c"># creates a new DataFrame - slow</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="n">append!</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">y</span><span class="p">);</span><span class="w"> </span><span class="c"># in place - fast</span><span class="w"></span>
+
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="o">^</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"> </span><span class="c"># reset to the same starting point</span><span class="w"></span>
+<span class="nd">@btime</span><span class="w"> </span><span class="n">push!</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">z</span><span class="p">);</span><span class="w"> </span><span class="c"># add a single row in place - fast</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4.411 ms (180 allocations: 38.15 MiB)
+  782.750 ns (17 allocations: 672 bytes)
+  416.700 ns (16 allocations: 256 bytes)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="allowing-missing-as-well-as-categorical-slows-down-computations">
+<h2>Allowing <code class="docutils literal notranslate"><span class="pre">missing</span></code> as well as <code class="docutils literal notranslate"><span class="pre">categorical</span></code> slows down computations<a class="headerlink" href="#allowing-missing-as-well-as-categorical-slows-down-computations" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">StatsBase</span><span class="w"></span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="c"># uses countmap function to test performance</span><span class="w"></span>
+<span class="w">    </span><span class="n">println</span><span class="p">(</span><span class="n">eltype</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">^</span><span class="mi">6</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">categorical</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">println</span><span class="p">(</span><span class="s">&quot; raw:&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nd">@btime</span><span class="w"> </span><span class="n">countmap</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">println</span><span class="p">(</span><span class="s">&quot; categorical:&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nd">@btime</span><span class="w"> </span><span class="n">countmap</span><span class="p">(</span><span class="o">$</span><span class="n">y</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nb">nothing</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="n">test</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="n">test</span><span class="p">([</span><span class="n">randstring</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">])</span><span class="w"></span>
+<span class="n">test</span><span class="p">(</span><span class="n">allowmissing</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">))</span><span class="w"></span>
+<span class="n">test</span><span class="p">(</span><span class="n">allowmissing</span><span class="p">([</span><span class="n">randstring</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">]))</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>ArgumentError: Package StatsBase not found in current path:
+- Run `import Pkg; Pkg.add(&quot;StatsBase&quot;)` to install the StatsBase package.
+
+
+Stacktrace:
+ [1] require(into::Module, mod::Symbol)
+   @ Base ./loading.jl:967
+ [2] eval
+   @ ./boot.jl:373 [inlined]
+ [3] include_string(mapexpr::typeof(REPL.softscope), mod::Module, code::String, filename::String)
+   @ Base ./loading.jl:1196
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="when-aggregating-use-column-selector-and-prefer-integer-categorical-or-pooled-array-grouping-variable">
+<h2>When aggregating use column selector and prefer integer, categorical, or pooled array grouping variable<a class="headerlink" href="#when-aggregating-use-column-selector-and-prefer-integer-categorical-or-pooled-array-grouping-variable" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="o">:</span><span class="sc">&#39;d&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">^</span><span class="mi">7</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="ss">:x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><p><b>GroupedDataFrame with 4 groups based on key: x</b></p><p><i>First Group (2500849 rows): x = &apos;a&apos;</i></p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>1</td></tr><tr><th>2</th><td>a</td><td>1</td></tr><tr><th>3</th><td>a</td><td>1</td></tr><tr><th>4</th><td>a</td><td>1</td></tr><tr><th>5</th><td>a</td><td>1</td></tr><tr><th>6</th><td>a</td><td>1</td></tr><tr><th>7</th><td>a</td><td>1</td></tr><tr><th>8</th><td>a</td><td>1</td></tr><tr><th>9</th><td>a</td><td>1</td></tr><tr><th>10</th><td>a</td><td>1</td></tr><tr><th>11</th><td>a</td><td>1</td></tr><tr><th>12</th><td>a</td><td>1</td></tr><tr><th>13</th><td>a</td><td>1</td></tr><tr><th>14</th><td>a</td><td>1</td></tr><tr><th>15</th><td>a</td><td>1</td></tr><tr><th>16</th><td>a</td><td>1</td></tr><tr><th>17</th><td>a</td><td>1</td></tr><tr><th>18</th><td>a</td><td>1</td></tr><tr><th>19</th><td>a</td><td>1</td></tr><tr><th>20</th><td>a</td><td>1</td></tr><tr><th>21</th><td>a</td><td>1</td></tr><tr><th>22</th><td>a</td><td>1</td></tr><tr><th>23</th><td>a</td><td>1</td></tr><tr><th>24</th><td>a</td><td>1</td></tr><tr><th>25</th><td>a</td><td>1</td></tr><tr><th>26</th><td>a</td><td>1</td></tr><tr><th>27</th><td>a</td><td>1</td></tr><tr><th>28</th><td>a</td><td>1</td></tr><tr><th>29</th><td>a</td><td>1</td></tr><tr><th>30</th><td>a</td><td>1</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div><p>&vellip;</p><p><i>Last Group (2499411 rows): x = &apos;d&apos;</i></p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>d</td><td>1</td></tr><tr><th>2</th><td>d</td><td>1</td></tr><tr><th>3</th><td>d</td><td>1</td></tr><tr><th>4</th><td>d</td><td>1</td></tr><tr><th>5</th><td>d</td><td>1</td></tr><tr><th>6</th><td>d</td><td>1</td></tr><tr><th>7</th><td>d</td><td>1</td></tr><tr><th>8</th><td>d</td><td>1</td></tr><tr><th>9</th><td>d</td><td>1</td></tr><tr><th>10</th><td>d</td><td>1</td></tr><tr><th>11</th><td>d</td><td>1</td></tr><tr><th>12</th><td>d</td><td>1</td></tr><tr><th>13</th><td>d</td><td>1</td></tr><tr><th>14</th><td>d</td><td>1</td></tr><tr><th>15</th><td>d</td><td>1</td></tr><tr><th>16</th><td>d</td><td>1</td></tr><tr><th>17</th><td>d</td><td>1</td></tr><tr><th>18</th><td>d</td><td>1</td></tr><tr><th>19</th><td>d</td><td>1</td></tr><tr><th>20</th><td>d</td><td>1</td></tr><tr><th>21</th><td>d</td><td>1</td></tr><tr><th>22</th><td>d</td><td>1</td></tr><tr><th>23</th><td>d</td><td>1</td></tr><tr><th>24</th><td>d</td><td>1</td></tr><tr><th>25</th><td>d</td><td>1</td></tr><tr><th>26</th><td>d</td><td>1</td></tr><tr><th>27</th><td>d</td><td>1</td></tr><tr><th>28</th><td>d</td><td>1</td></tr><tr><th>29</th><td>d</td><td>1</td></tr><tr><th>30</th><td>d</td><td>1</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="n">combine</span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="o">$</span><span class="n">gdf</span><span class="p">)</span><span class="w"> </span><span class="c"># traditional syntax, slow</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  42.850 ms (334 allocations: 19.10 MiB)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>4 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>x1</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>2500849</td></tr><tr><th>2</th><td>b</td><td>2499628</td></tr><tr><th>3</th><td>c</td><td>2500112</td></tr><tr><th>4</th><td>d</td><td>2499411</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="n">combine</span><span class="p">(</span><span class="o">$</span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="ss">:y</span><span class="o">=&gt;</span><span class="n">sum</span><span class="p">)</span><span class="w"> </span><span class="c"># use column selector</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8.719 ms (230 allocations: 13.31 KiB)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>4 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y_sum</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>2500849</td></tr><tr><th>2</th><td>b</td><td>2499628</td></tr><tr><th>3</th><td>c</td><td>2500112</td></tr><tr><th>4</th><td>d</td><td>2499411</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">transform!</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="ss">:x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">categorical</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="ss">:x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="ss">:x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><p><b>GroupedDataFrame with 4 groups based on key: x</b></p><p><i>First Group (2500849 rows): x = CategoricalValue{Char, UInt32} &apos;a&apos;</i></p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="CategoricalValue{Char, UInt32}">Cat…</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>1</td></tr><tr><th>2</th><td>a</td><td>1</td></tr><tr><th>3</th><td>a</td><td>1</td></tr><tr><th>4</th><td>a</td><td>1</td></tr><tr><th>5</th><td>a</td><td>1</td></tr><tr><th>6</th><td>a</td><td>1</td></tr><tr><th>7</th><td>a</td><td>1</td></tr><tr><th>8</th><td>a</td><td>1</td></tr><tr><th>9</th><td>a</td><td>1</td></tr><tr><th>10</th><td>a</td><td>1</td></tr><tr><th>11</th><td>a</td><td>1</td></tr><tr><th>12</th><td>a</td><td>1</td></tr><tr><th>13</th><td>a</td><td>1</td></tr><tr><th>14</th><td>a</td><td>1</td></tr><tr><th>15</th><td>a</td><td>1</td></tr><tr><th>16</th><td>a</td><td>1</td></tr><tr><th>17</th><td>a</td><td>1</td></tr><tr><th>18</th><td>a</td><td>1</td></tr><tr><th>19</th><td>a</td><td>1</td></tr><tr><th>20</th><td>a</td><td>1</td></tr><tr><th>21</th><td>a</td><td>1</td></tr><tr><th>22</th><td>a</td><td>1</td></tr><tr><th>23</th><td>a</td><td>1</td></tr><tr><th>24</th><td>a</td><td>1</td></tr><tr><th>25</th><td>a</td><td>1</td></tr><tr><th>26</th><td>a</td><td>1</td></tr><tr><th>27</th><td>a</td><td>1</td></tr><tr><th>28</th><td>a</td><td>1</td></tr><tr><th>29</th><td>a</td><td>1</td></tr><tr><th>30</th><td>a</td><td>1</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div><p>&vellip;</p><p><i>Last Group (2499411 rows): x = CategoricalValue{Char, UInt32} &apos;d&apos;</i></p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="CategoricalValue{Char, UInt32}">Cat…</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>d</td><td>1</td></tr><tr><th>2</th><td>d</td><td>1</td></tr><tr><th>3</th><td>d</td><td>1</td></tr><tr><th>4</th><td>d</td><td>1</td></tr><tr><th>5</th><td>d</td><td>1</td></tr><tr><th>6</th><td>d</td><td>1</td></tr><tr><th>7</th><td>d</td><td>1</td></tr><tr><th>8</th><td>d</td><td>1</td></tr><tr><th>9</th><td>d</td><td>1</td></tr><tr><th>10</th><td>d</td><td>1</td></tr><tr><th>11</th><td>d</td><td>1</td></tr><tr><th>12</th><td>d</td><td>1</td></tr><tr><th>13</th><td>d</td><td>1</td></tr><tr><th>14</th><td>d</td><td>1</td></tr><tr><th>15</th><td>d</td><td>1</td></tr><tr><th>16</th><td>d</td><td>1</td></tr><tr><th>17</th><td>d</td><td>1</td></tr><tr><th>18</th><td>d</td><td>1</td></tr><tr><th>19</th><td>d</td><td>1</td></tr><tr><th>20</th><td>d</td><td>1</td></tr><tr><th>21</th><td>d</td><td>1</td></tr><tr><th>22</th><td>d</td><td>1</td></tr><tr><th>23</th><td>d</td><td>1</td></tr><tr><th>24</th><td>d</td><td>1</td></tr><tr><th>25</th><td>d</td><td>1</td></tr><tr><th>26</th><td>d</td><td>1</td></tr><tr><th>27</th><td>d</td><td>1</td></tr><tr><th>28</th><td>d</td><td>1</td></tr><tr><th>29</th><td>d</td><td>1</td></tr><tr><th>30</th><td>d</td><td>1</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="n">combine</span><span class="p">(</span><span class="o">$</span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="ss">:y</span><span class="o">=&gt;</span><span class="n">sum</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8.908 ms (237 allocations: 13.89 KiB)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>4 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y_sum</th></tr><tr><th></th><th title="CategoricalValue{Char, UInt32}">Cat…</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>2500849</td></tr><tr><th>2</th><td>b</td><td>2499628</td></tr><tr><th>3</th><td>c</td><td>2500112</td></tr><tr><th>4</th><td>d</td><td>2499411</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">transform!</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="ss">:x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">PooledArray</span><span class="p">{</span><span class="kt">Char</span><span class="p">}</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="ss">:x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>10,000,000 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>1</td></tr><tr><th>2</th><td>b</td><td>1</td></tr><tr><th>3</th><td>c</td><td>1</td></tr><tr><th>4</th><td>a</td><td>1</td></tr><tr><th>5</th><td>b</td><td>1</td></tr><tr><th>6</th><td>a</td><td>1</td></tr><tr><th>7</th><td>b</td><td>1</td></tr><tr><th>8</th><td>b</td><td>1</td></tr><tr><th>9</th><td>a</td><td>1</td></tr><tr><th>10</th><td>c</td><td>1</td></tr><tr><th>11</th><td>a</td><td>1</td></tr><tr><th>12</th><td>b</td><td>1</td></tr><tr><th>13</th><td>c</td><td>1</td></tr><tr><th>14</th><td>b</td><td>1</td></tr><tr><th>15</th><td>b</td><td>1</td></tr><tr><th>16</th><td>d</td><td>1</td></tr><tr><th>17</th><td>b</td><td>1</td></tr><tr><th>18</th><td>a</td><td>1</td></tr><tr><th>19</th><td>d</td><td>1</td></tr><tr><th>20</th><td>d</td><td>1</td></tr><tr><th>21</th><td>a</td><td>1</td></tr><tr><th>22</th><td>d</td><td>1</td></tr><tr><th>23</th><td>a</td><td>1</td></tr><tr><th>24</th><td>b</td><td>1</td></tr><tr><th>25</th><td>c</td><td>1</td></tr><tr><th>26</th><td>c</td><td>1</td></tr><tr><th>27</th><td>b</td><td>1</td></tr><tr><th>28</th><td>a</td><td>1</td></tr><tr><th>29</th><td>d</td><td>1</td></tr><tr><th>30</th><td>d</td><td>1</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="ss">:x</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><p><b>GroupedDataFrame with 4 groups based on key: x</b></p><p><i>First Group (2500849 rows): x = &apos;a&apos;</i></p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>1</td></tr><tr><th>2</th><td>a</td><td>1</td></tr><tr><th>3</th><td>a</td><td>1</td></tr><tr><th>4</th><td>a</td><td>1</td></tr><tr><th>5</th><td>a</td><td>1</td></tr><tr><th>6</th><td>a</td><td>1</td></tr><tr><th>7</th><td>a</td><td>1</td></tr><tr><th>8</th><td>a</td><td>1</td></tr><tr><th>9</th><td>a</td><td>1</td></tr><tr><th>10</th><td>a</td><td>1</td></tr><tr><th>11</th><td>a</td><td>1</td></tr><tr><th>12</th><td>a</td><td>1</td></tr><tr><th>13</th><td>a</td><td>1</td></tr><tr><th>14</th><td>a</td><td>1</td></tr><tr><th>15</th><td>a</td><td>1</td></tr><tr><th>16</th><td>a</td><td>1</td></tr><tr><th>17</th><td>a</td><td>1</td></tr><tr><th>18</th><td>a</td><td>1</td></tr><tr><th>19</th><td>a</td><td>1</td></tr><tr><th>20</th><td>a</td><td>1</td></tr><tr><th>21</th><td>a</td><td>1</td></tr><tr><th>22</th><td>a</td><td>1</td></tr><tr><th>23</th><td>a</td><td>1</td></tr><tr><th>24</th><td>a</td><td>1</td></tr><tr><th>25</th><td>a</td><td>1</td></tr><tr><th>26</th><td>a</td><td>1</td></tr><tr><th>27</th><td>a</td><td>1</td></tr><tr><th>28</th><td>a</td><td>1</td></tr><tr><th>29</th><td>a</td><td>1</td></tr><tr><th>30</th><td>a</td><td>1</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div><p>&vellip;</p><p><i>Last Group (2499411 rows): x = &apos;d&apos;</i></p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x</th><th>y</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>d</td><td>1</td></tr><tr><th>2</th><td>d</td><td>1</td></tr><tr><th>3</th><td>d</td><td>1</td></tr><tr><th>4</th><td>d</td><td>1</td></tr><tr><th>5</th><td>d</td><td>1</td></tr><tr><th>6</th><td>d</td><td>1</td></tr><tr><th>7</th><td>d</td><td>1</td></tr><tr><th>8</th><td>d</td><td>1</td></tr><tr><th>9</th><td>d</td><td>1</td></tr><tr><th>10</th><td>d</td><td>1</td></tr><tr><th>11</th><td>d</td><td>1</td></tr><tr><th>12</th><td>d</td><td>1</td></tr><tr><th>13</th><td>d</td><td>1</td></tr><tr><th>14</th><td>d</td><td>1</td></tr><tr><th>15</th><td>d</td><td>1</td></tr><tr><th>16</th><td>d</td><td>1</td></tr><tr><th>17</th><td>d</td><td>1</td></tr><tr><th>18</th><td>d</td><td>1</td></tr><tr><th>19</th><td>d</td><td>1</td></tr><tr><th>20</th><td>d</td><td>1</td></tr><tr><th>21</th><td>d</td><td>1</td></tr><tr><th>22</th><td>d</td><td>1</td></tr><tr><th>23</th><td>d</td><td>1</td></tr><tr><th>24</th><td>d</td><td>1</td></tr><tr><th>25</th><td>d</td><td>1</td></tr><tr><th>26</th><td>d</td><td>1</td></tr><tr><th>27</th><td>d</td><td>1</td></tr><tr><th>28</th><td>d</td><td>1</td></tr><tr><th>29</th><td>d</td><td>1</td></tr><tr><th>30</th><td>d</td><td>1</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="n">combine</span><span class="p">(</span><span class="o">$</span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="ss">:y</span><span class="o">=&gt;</span><span class="n">sum</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  9.534 ms (232 allocations: 13.38 KiB)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>4 rows × 2 columns</p><table class="data-frame"><thead><tr><th></th><th>x</th><th>y_sum</th></tr><tr><th></th><th title="Char">Char</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>a</td><td>2500849</td></tr><tr><th>2</th><td>b</td><td>2499628</td></tr><tr><th>3</th><td>c</td><td>2500112</td></tr><tr><th>4</th><td>d</td><td>2499411</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="use-views-instead-of-materializing-a-new-dataframe">
+<h2>Use views instead of materializing a new DataFrame<a class="headerlink" href="#use-views-instead-of-materializing-a-new-dataframe" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">),</span><span class="w"> </span><span class="ss">:auto</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="data-frame"><p>100 rows × 1,000 columns (omitted printing of 993 columns)</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.524836</td><td>0.72675</td><td>0.474059</td><td>0.521572</td><td>0.460615</td><td>0.493288</td><td>0.62556</td></tr><tr><th>2</th><td>0.450111</td><td>0.438803</td><td>0.914643</td><td>0.152005</td><td>0.470075</td><td>0.477494</td><td>0.098748</td></tr><tr><th>3</th><td>0.399348</td><td>0.810325</td><td>0.994383</td><td>0.636791</td><td>0.663914</td><td>0.358692</td><td>0.557299</td></tr><tr><th>4</th><td>0.171113</td><td>0.995161</td><td>0.957723</td><td>0.0978758</td><td>0.0672851</td><td>0.829578</td><td>0.87674</td></tr><tr><th>5</th><td>0.237382</td><td>0.367287</td><td>0.690186</td><td>0.61463</td><td>0.69947</td><td>0.571084</td><td>0.981192</td></tr><tr><th>6</th><td>0.0738984</td><td>0.895709</td><td>0.0657372</td><td>0.066569</td><td>0.479868</td><td>0.339752</td><td>0.679379</td></tr><tr><th>7</th><td>0.0838025</td><td>0.161537</td><td>0.638759</td><td>0.839586</td><td>0.461109</td><td>0.533586</td><td>0.968726</td></tr><tr><th>8</th><td>0.323185</td><td>0.679265</td><td>0.406851</td><td>0.950191</td><td>0.102193</td><td>0.0965595</td><td>0.569159</td></tr><tr><th>9</th><td>0.939335</td><td>0.0349469</td><td>0.370833</td><td>0.234694</td><td>0.499019</td><td>0.178378</td><td>0.292509</td></tr><tr><th>10</th><td>0.90771</td><td>0.599251</td><td>0.921183</td><td>0.155048</td><td>0.825517</td><td>0.417809</td><td>0.720356</td></tr><tr><th>11</th><td>0.61617</td><td>0.600701</td><td>0.0158546</td><td>0.788483</td><td>0.673693</td><td>0.905307</td><td>0.0366757</td></tr><tr><th>12</th><td>0.506228</td><td>0.602637</td><td>0.998199</td><td>0.735448</td><td>0.949338</td><td>0.634511</td><td>0.141181</td></tr><tr><th>13</th><td>0.464914</td><td>0.282784</td><td>0.414046</td><td>0.234214</td><td>0.614133</td><td>0.54159</td><td>0.367568</td></tr><tr><th>14</th><td>0.947302</td><td>0.327462</td><td>0.182383</td><td>0.475915</td><td>0.911587</td><td>0.207368</td><td>0.868821</td></tr><tr><th>15</th><td>0.154741</td><td>0.474076</td><td>0.54408</td><td>0.366031</td><td>0.265035</td><td>0.695092</td><td>0.971553</td></tr><tr><th>16</th><td>0.334337</td><td>0.582793</td><td>0.000873808</td><td>0.0855726</td><td>0.713024</td><td>0.181267</td><td>0.634381</td></tr><tr><th>17</th><td>0.566172</td><td>0.162532</td><td>0.357058</td><td>0.175467</td><td>0.502198</td><td>0.489451</td><td>0.408845</td></tr><tr><th>18</th><td>0.0269386</td><td>0.210234</td><td>0.716538</td><td>0.993341</td><td>0.892498</td><td>0.751895</td><td>0.477611</td></tr><tr><th>19</th><td>0.65602</td><td>0.270162</td><td>0.870305</td><td>0.617436</td><td>0.878699</td><td>0.142366</td><td>0.580642</td></tr><tr><th>20</th><td>0.185428</td><td>0.101299</td><td>0.865675</td><td>0.530975</td><td>0.774263</td><td>0.240913</td><td>0.198648</td></tr><tr><th>21</th><td>0.592698</td><td>0.892818</td><td>0.566977</td><td>0.0655156</td><td>0.704156</td><td>0.223823</td><td>0.672363</td></tr><tr><th>22</th><td>0.672051</td><td>0.617892</td><td>0.909576</td><td>0.902716</td><td>0.685912</td><td>0.797748</td><td>0.374085</td></tr><tr><th>23</th><td>0.225376</td><td>0.734299</td><td>0.861357</td><td>0.836991</td><td>0.216526</td><td>0.9796</td><td>0.430972</td></tr><tr><th>24</th><td>0.697722</td><td>0.586673</td><td>0.26608</td><td>0.632099</td><td>0.937948</td><td>0.820225</td><td>0.677072</td></tr><tr><th>25</th><td>0.296484</td><td>0.0199061</td><td>0.38203</td><td>0.418092</td><td>0.208257</td><td>0.0140049</td><td>0.966223</td></tr><tr><th>26</th><td>0.350249</td><td>0.520419</td><td>0.721534</td><td>0.271282</td><td>0.414686</td><td>0.266654</td><td>0.869908</td></tr><tr><th>27</th><td>0.403318</td><td>0.539874</td><td>0.906806</td><td>0.516251</td><td>0.815335</td><td>0.149898</td><td>0.313317</td></tr><tr><th>28</th><td>0.183978</td><td>0.0104943</td><td>0.596848</td><td>0.0754629</td><td>0.170785</td><td>0.230964</td><td>0.930308</td></tr><tr><th>29</th><td>0.247085</td><td>0.219024</td><td>0.105956</td><td>0.922811</td><td>0.258989</td><td>0.774253</td><td>0.477517</td></tr><tr><th>30</th><td>0.605548</td><td>0.624703</td><td>0.939283</td><td>0.222221</td><td>0.00739087</td><td>0.0772928</td><td>0.975965</td></tr><tr><th>&vellip;</th><td>&vellip;</td><td>&vellip;</td><td>&vellip;</td><td>&vellip;</td><td>&vellip;</td><td>&vellip;</td><td>&vellip;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="o">$</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">:</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  165.450 μs (2985 allocations: 159.44 KiB)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>1 rows × 1,000 columns (omitted printing of 992 columns)</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.524836</td><td>0.72675</td><td>0.474059</td><td>0.521572</td><td>0.460615</td><td>0.493288</td><td>0.62556</td><td>0.000997819</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="o">$</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">:</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  18.785 ns (0 allocations: 0 bytes)
+</pre></div>
+</div>
+<div class="output text_html"><p>DataFrameRow (1000 columns)</p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.524836</td><td>0.72675</td><td>0.474059</td><td>0.521572</td><td>0.460615</td><td>0.493288</td><td>0.62556</td><td>0.000997819</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="n">view</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">:</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  17.864 ns (0 allocations: 0 bytes)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>1 rows × 1,000 columns (omitted printing of 992 columns)</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.524836</td><td>0.72675</td><td>0.474059</td><td>0.521572</td><td>0.460615</td><td>0.493288</td><td>0.62556</td><td>0.000997819</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="o">$</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">20</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  3.643 μs (50 allocations: 4.22 KiB)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>1 rows × 20 columns (omitted printing of 12 columns)</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.524836</td><td>0.72675</td><td>0.474059</td><td>0.521572</td><td>0.460615</td><td>0.493288</td><td>0.62556</td><td>0.000997819</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="o">$</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">20</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  19.097 ns (0 allocations: 0 bytes)
+</pre></div>
+</div>
+<div class="output text_html"><p>DataFrameRow (20 columns)</p><div class="data-frame"><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.524836</td><td>0.72675</td><td>0.474059</td><td>0.521572</td><td>0.460615</td><td>0.493288</td><td>0.62556</td><td>0.000997819</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span><span class="w"> </span><span class="n">view</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">20</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  18.184 ns (0 allocations: 0 bytes)
+</pre></div>
+</div>
+<div class="output text_html"><div class="data-frame"><p>1 rows × 20 columns (omitted printing of 12 columns)</p><table class="data-frame"><thead><tr><th></th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>0.524836</td><td>0.72675</td><td>0.474059</td><td>0.521572</td><td>0.460615</td><td>0.493288</td><td>0.62556</td><td>0.000997819</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.7"
+        },
+        kernelOptions: {
+            kernelName: "julia-1.7",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.7'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="10_transforms.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Transformation to DataFrames</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="12_pitfalls.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Possible pitfalls</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Wen-Wei Tseng<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
